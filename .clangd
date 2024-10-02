@@ -1,0 +1,2 @@
+CompileFlags:
+  Add: -I$HOME/code/ig/opengl-practica/materiales/src-cpp
