@@ -32,6 +32,7 @@
 #include "vaos-vbos.h"
 #include <glm/ext/vector_float3.hpp>
 #include <ig-aux.h>
+#include <sys/types.h>
 #include <vector> // usar std::vector
 
 #include "objeto3d.h" // declaración de 'Objeto3D'
@@ -132,4 +133,32 @@ public:
 
 // ---------------------------------------------------------------------
 
+class EstrellaZ : public MallaInd {
+public:
+  EstrellaZ(uint n);
+};
+
+// ---------------------------------------------------------------------
+class CasaX : public MallaInd {
+public:
+  CasaX();
+};
+
+// ---------------------------------------------------------------------
+class MallaTriangulo : public MallaInd {
+public:
+  MallaTriangulo();
+};
+
+// ---------------------------------------------------------------------
+class MallaCuadrado : public MallaInd {
+public:
+  MallaCuadrado();
+};
+
+// ---------------------------------------------------------------------
+class MallaPiramideL : public MallaInd {
+public:
+  MallaPiramideL();
+};
 #endif

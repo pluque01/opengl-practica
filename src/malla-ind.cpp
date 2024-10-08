@@ -33,6 +33,9 @@
 #include "lector-ply.h"
 #include "seleccion.h" // para 'ColorDesdeIdent'
 #include "vaos-vbos.h"
+#include <cmath>
+#include <glm/trigonometric.hpp>
+#include <sys/types.h>
 
 // *****************************************************************************
 // funciones auxiliares
@@ -397,5 +400,148 @@ CuboColores::CuboColores() : MallaInd("cubo 8 vértices con colores") {
     }
     col_ver.push_back(rgb_color);
   }
+}
+
+// ****************************************************************************
+// Clase 'EstrellaZ
+
+EstrellaZ::EstrellaZ(uint n) : MallaInd("Estrella de n puntas") {
+  glm::vec3 centro = {0.5, 0.5, 0.0};
+  float radio_mayor = 0.5;
+  float radio_menor = radio_mayor / 2;
+  vertices.push_back(centro);
+  col_ver.push_back({1.0, 1.0, 1.0});
+
+  float angulo = 360 / n;
+
+  for (int i = 0; i < n; i++) {
+    // Para vertices mayores
+    float vert_x = centro[0] + radio_mayor * cos(glm::radians(angulo * i));
+    float vert_y = centro[1] + radio_mayor * sin(glm::radians(angulo * i));
+    vertices.push_back({vert_x, vert_y, 0.0});
+    col_ver.push_back({vert_x, vert_y, 0.0});
+
+    // Para vertices interiores
+    vert_x =
+        centro[0] + radio_menor * cos(glm::radians(angulo * i + angulo / 2));
+    vert_y =
+        centro[1] + radio_menor * sin(glm::radians(angulo * i + angulo / 2));
+    vertices.push_back({vert_x, vert_y, 0.0});
+    col_ver.push_back({vert_x, vert_y, 0.0});
+  }
+
+  uint vert1 = 1, vert2 = 2;
+  for (int i = 0; i < 2 * n; i++) {
+    triangulos.push_back({0, vert1, vert2});
+    if (i % 2 == 0) {
+      vert1 += 2;
+    } else {
+      vert2 += 2;
+    }
+
+    if (vert1 > 2 * n) {
+      vert1 = 1;
+    }
+  }
+}
+
+// ****************************************************************************
+// Clase 'CasaX
+CasaX::CasaX() : MallaInd("CasaX con colores") {
+  vertices = {
+      {0.0, 0.0, 0.0},      // 0
+      {0.0, 0.0, +0.75},    // 1
+      {0.0, +0.75, 0.0},    // 2
+      {0.0, +0.75, +0.75},  // 3
+      {+1.0, 0.0, 0.0},     // 4
+      {+1.0, 0.0, +0.75},   // 5
+      {+1.0, +0.75, 0.0},   // 6
+      {+1.0, +0.75, +0.75}, // 7
+      {0.0, 1.0, 0.385},    // 8
+      {1.0, 1.0, 0.385},    // 9
+  };
+
+  triangulos = {
+      {0, 1, 3},
+      {0, 3, 2}, // X-
+      {4, 7, 5},
+      {4, 6, 7}, // X+ (+4)
+
+      // {0, 5, 1}, {0, 4, 5}, // Y-
+      {3, 8, 9},
+      {7, 3, 9}, // Y+ (+2)
+      {2, 8, 9},
+      {6, 2, 9}, // Y+ (+2)
+
+      // Triangulos
+      {2, 3, 8}, // Y+ (+2)
+      {6, 7, 9}, // Y+ (+2)
+
+      {0, 6, 4},
+      {0, 2, 6}, // Z-
+      {1, 5, 7},
+      {1, 7, 3} // Z+ (+1)
+  };
+
+  for (auto &vert : vertices) {
+    col_ver.push_back(vert);
+  }
+}
+
+// ****************************************************************************
+// Clase 'MallaTriangulo
+MallaTriangulo::MallaTriangulo() : MallaInd("MallaTriangulo") {
+  vertices = {
+      {0.0, 0.0, 0.0},
+      {0.0, std::sqrt(2.0), 0.0},
+      {1.0, 0.0, 0.0},
+  };
+  triangulos = {
+      {0, 1, 2},
+  };
+}
+
+// ****************************************************************************
+// Clase 'MallaCuadrado
+MallaCuadrado::MallaCuadrado() : MallaInd("MallaCuadrado") {
+  vertices = {
+      {0.0, 0.0, 0.0},
+      {0.0, 2.0, 0.0},
+      {2.0, 0.0, 0.0},
+      {2.0, 2.0, 0.0},
+  };
+  triangulos = {
+      {0, 1, 2},
+      {1, 2, 3},
+  };
+}
+
+// ****************************************************************************
+// Clase 'MallaPiramideL
+MallaPiramideL::MallaPiramideL() : MallaInd("MallaPiramideL") {
+  vertices = {
+      {0.0, 0.0, 0.0}, // esquina 1
+      {2.0, 0.0, 0.0}, // esquina 2
+      {0.0, 0.0, 2.0}, // esquina 3
+      {1.0, 0.0, 1.0}, // centro inferior
+      {1.0, 2.0, 1.0}, // centro superior
+      {2.0, 0.0, 1.0}, // esquina mitad 1
+      {1.0, 0.0, 2.0}, // esquina mitad 2
+  };
+  triangulos = {
+      // BASE
+      {0, 1, 2},
+      {1, 5, 3},
+      {2, 6, 3},
+      // Caras grandes
+      {0, 1, 4},
+      {0, 2, 4},
+      // Caras pequeñas
+      {1, 5, 4},
+      {2, 6, 4},
+      // Caras internas
+      {3, 4, 5},
+      {3, 4, 6},
+  };
 }
 // -----------------------------------------------------------------------------------------------
