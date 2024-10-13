@@ -1,15 +1,18 @@
 // *********************************************************************
 // **
 // ** Asignatura: INFORMÁTICA GRÁFICA
-// ** 
+// **
 // ** Gestión de escenas (declaraciones). Clase 'Escena' y derivadas.
 // ** Copyright (C) 2016-2024 Carlos Ureña
 // **
 // ** Declaración de la clase 'Escena' y derivadas (una por cada práctica)
 // **
-// **  + Escena: clase con una colección de objetos para visualizar, las fuentes de luz
-// **    y una cámara. En cada momento se visualiza uno de los objetos (se conmuta con 'o')
-// **    Las clases derivadas incluyen cada una un constructor específico que crea el objeto,
+// **  + Escena: clase con una colección de objetos para visualizar, las fuentes
+// de luz
+// **    y una cámara. En cada momento se visualiza uno de los objetos (se
+// conmuta con 'o')
+// **    Las clases derivadas incluyen cada una un constructor específico que
+// crea el objeto,
 // **    son estas:
 // **
 // **       + Escena1 : práctica 1
@@ -36,12 +39,10 @@
 #ifndef ESCENA_H
 #define ESCENA_H
 
-
-#include <vector>
 #include "aplicacion-ig.h"
+#include <vector>
 // #include "objeto3d.h"
 // #include "camara.h"
-
 
 // *************************************************************************
 // Clase Escena
@@ -49,71 +50,66 @@
 // Clase para objetos visualizables de tipo escena: incluye objetos, cámaras,
 // un material inicial, una colección de fuentes de luz, etc...
 
+class Escena {
+public:
+  // crea una escena con una cámara orbital simple, materiales y luces por
+  // defecto.
+  Escena();
 
-class Escena
-{
-   public:
+  // visualiza el objeto actual de la escena
+  void visualizarGL();
 
-   // crea una escena con una cámara orbital simple, materiales y luces por defecto.
-   Escena() ;
+  // visualiza el objeto actual de la escena, pero en modo selección
+  void visualizarGL_Seleccion();
 
-   // visualiza el objeto actual de la escena
-   void visualizarGL(  ) ;
+  // pasa la cámara actual a la siguiente
+  void siguienteCamara();
 
-   // visualiza el objeto actual de la escena, pero en modo selección 
-   void visualizarGL_Seleccion(  );
+  // devuelve un puntero a la cámara actual
+  CamaraInteractiva *camaraActual();
 
-   // pasa la cámara actual a la siguiente
-   void siguienteCamara() ;
+  // pasa el objeto actual al siguiente
+  void siguienteObjeto();
 
-   // devuelve un puntero a la cámara actual
-   CamaraInteractiva * camaraActual() ;
+  // devuelve puntero al objeto actual
+  Objeto3D *objetoActual();
 
-   // pasa el objeto actual al siguiente
-   void siguienteObjeto() ;
+  // devuelve un puntero a la colección de fuentes actual
+  ColFuentesLuz *colFuentes();
 
-   // devuelve puntero al objeto actual
-   Objeto3D * objetoActual();
+  // visualiza las normales del objeto actual de la escena
+  void visualizarNormales();
 
-   // devuelve un puntero a la colección de fuentes actual
-   ColFuentesLuz * colFuentes();
+protected:
+  // vector de objetos (alternativos: se visualiza uno de ellos nada más)
+  std::vector<Objeto3D *> objetos;
 
-   // visualiza las normales del objeto actual de la escena
-   void visualizarNormales();
-  
+  // vector de cámaras (se usa una en cada momento)
+  std::vector<CamaraInteractiva *> camaras;
 
-   protected:
-   // vector de objetos (alternativos: se visualiza uno de ellos nada más)
-   std::vector<Objeto3D *> objetos ;
+  // material por defecto que se activa antes de dibujar (con iluminación
+  // activada)
+  Material *material_ini = nullptr;
 
-   // vector de cámaras (se usa una en cada momento)
-   std::vector<CamaraInteractiva *> camaras ;
+  // colección de fuentes de luz que se usarán para dibujar, (con iluminación
+  // activada)
+  ColFuentesLuz *col_fuentes = nullptr;
 
-   // material por defecto que se activa antes de dibujar (con iluminación activada)
-   Material * material_ini = nullptr ;
+  // índice de la cámara activa (en el vector 'camaras')
+  unsigned ind_camara_actual = 0;
 
-   // colección de fuentes de luz que se usarán para dibujar, (con iluminación activada)
-   ColFuentesLuz * col_fuentes = nullptr ;
-
-   // índice de la cámara activa (en el vector 'camaras')
-   unsigned ind_camara_actual = 0 ;
-
-   // índice del objeto activo (en el vector 'objetos')
-   unsigned ind_objeto_actual = 0 ;
-
-} ;
-
+  // índice del objeto activo (en el vector 'objetos')
+  unsigned ind_objeto_actual = 0;
+};
 
 // -------------------------------------------------------------------------
 // clase derivada de 'Escena', define un constructor que permite añadir
 // al array de objetos de la escena los objetos que se indican en la práctica 1
 
-class Escena1 : public Escena
-{
-   public:
-      Escena1() ;
-} ;
-
+class Escena1 : public Escena {
+public:
+  Escena1();
+};
 
 // -------------------------------------------------------------------------
 // COMPLETAR: Práctica 2, 3, 4 y 5.
