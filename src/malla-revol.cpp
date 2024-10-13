@@ -1,14 +1,15 @@
 // *********************************************************************
 // **
 // ** Asignatura: INFORMÁTICA GRÁFICA
-// ** 
-// ** Mallas indexadas creadas por revolución de un perfil (implementación). Clase 'MallaRevol' y derivadas.
+// **
+// ** Mallas indexadas creadas por revolución de un perfil (implementación).
+// Clase 'MallaRevol' y derivadas.
 // ** Copyright (C) 2016-2024 Carlos Ureña
 // **
-// ** Implementación de las clases 
-// **    + MallaRevol: malla indexada de triángulos obtenida por 
+// ** Implementación de las clases
+// **    + MallaRevol: malla indexada de triángulos obtenida por
 // **      revolución de un perfil (derivada de MallaInd)
-// **    + MallaRevolPLY: malla indexada de triángulos, obtenida 
+// **    + MallaRevolPLY: malla indexada de triángulos, obtenida
 // **      por revolución de un perfil leído de un PLY (derivada de MallaRevol)
 // **    + algunas clases derivadas de MallaRevol
 // **
@@ -27,57 +28,40 @@
 // **
 // *********************************************************************
 
+#include "malla-revol.h"
 #include "ig-aux.h"
 #include "lector-ply.h"
-#include "malla-revol.h"
 
-using namespace std ;
+using namespace std;
 
 // *****************************************************************************
 
-
-
-
 // Método que crea las tablas de vértices, triángulos, normales y cc.de.tt.
 // a partir de un perfil y el número de copias que queremos de dicho perfil.
-void MallaRevol::inicializar
-(
-   const std::vector<glm::vec3> & perfil,     // tabla de vértices del perfil original
-   const unsigned               num_copias  // número de copias del perfil
-)
-{
-   using namespace glm ;
-   
-   // COMPLETAR: práctica 2: implementar algoritmo de creación de malla de revolución
-   //
-   // Escribir el algoritmo de creación de una malla indexada por revolución de un 
-   // perfil, según se describe en el guion de prácticas.
-   //
-   // ............................... 
+void MallaRevol::inicializar(
+    const std::vector<glm::vec3>
+        &perfil,              // tabla de vértices del perfil original
+    const unsigned num_copias // número de copias del perfil
+) {
+  using namespace glm;
 
-
-
-
-
+  // COMPLETAR: práctica 2: implementar algoritmo de creación de malla de
+  // revolución
+  //
+  // Escribir el algoritmo de creación de una malla indexada por revolución de
+  // un perfil, según se describe en el guion de prácticas.
+  //
+  // ...............................
 }
 
 // -----------------------------------------------------------------------------
 // constructor, a partir de un archivo PLY
 
-MallaRevolPLY::MallaRevolPLY
-(
-   const std::string & nombre_arch,
-   const unsigned      nperfiles
-)
-{
-   ponerNombre( std::string("malla por revolución del perfil en '"+ nombre_arch + "'" ));
-   // COMPLETAR: práctica 2: crear la malla de revolución
-   // Leer los vértice del perfil desde un PLY, después llamar a 'inicializar'
-   // ...........................
-
-
+MallaRevolPLY::MallaRevolPLY(const std::string &nombre_arch,
+                             const unsigned nperfiles) {
+  ponerNombre(
+      std::string("malla por revolución del perfil en '" + nombre_arch + "'"));
+  // COMPLETAR: práctica 2: crear la malla de revolución
+  // Leer los vértice del perfil desde un PLY, después llamar a 'inicializar'
+  // ...........................
 }
-
-
-
-
