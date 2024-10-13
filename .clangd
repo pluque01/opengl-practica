@@ -1,2 +1,2 @@
 CompileFlags:
-  Add: -I$HOME/code/ig/opengl-practica/materiales/src-cpp
+  Add: -I/home/fallen/code/ig/opengl-practica/materiales/src-cpp
