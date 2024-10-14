@@ -31,6 +31,8 @@
 #include "malla-revol.h"
 #include "ig-aux.h"
 #include "lector-ply.h"
+#include <glm/ext/scalar_constants.hpp>
+#include <glm/gtc/constants.hpp>
 
 using namespace std;
 
@@ -50,8 +52,27 @@ void MallaRevol::inicializar(
   //
   // Escribir el algoritmo de creación de una malla indexada por revolución de
   // un perfil, según se describe en el guion de prácticas.
-  //
-  // ...............................
+
+  int num_vertices = perfil.size();
+  // Para la tabla de vértices
+  for (int i = 0; i < num_copias; i++) {
+    float angle =
+        (glm::two_pi<float>() * i) / static_cast<float>((num_copias - 1));
+    for (int j = 0; j < num_vertices; j++) {
+      float vert_x = perfil[j][0] * cos(angle);
+      float vert_z = -perfil[j][0] * sin(angle);
+      vertices.push_back({vert_x, perfil[j][1], vert_z});
+    }
+  }
+
+  // Para la tabla de triángulos
+  for (int i = 0; i < num_copias - 1; i++) {
+    for (int j = 0; j < num_vertices - 1; j++) {
+      int k = i * num_vertices + j;
+      triangulos.push_back({k, k + num_vertices, k + num_vertices + 1});
+      triangulos.push_back({k, k + num_vertices + 1, k + 1});
+    }
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -64,4 +85,41 @@ MallaRevolPLY::MallaRevolPLY(const std::string &nombre_arch,
   // COMPLETAR: práctica 2: crear la malla de revolución
   // Leer los vértice del perfil desde un PLY, después llamar a 'inicializar'
   // ...........................
+  vector<glm::vec3> perfil;
+  LeerVerticesPLY(nombre_arch, perfil);
+  inicializar(perfil, nperfiles);
+}
+
+Cilindro::Cilindro(const int num_verts_per, const unsigned nperfiles) {
+  const float altura = 1.0;
+  vector<glm::vec3> perfil;
+  for (int i = 0; i < num_verts_per; i++) {
+    float vec_y = (altura / (num_verts_per - 1)) * i;
+    perfil.push_back({1.0, vec_y, 0.0});
+  }
+  inicializar(perfil, nperfiles);
+}
+
+Cono::Cono(const int num_verts_per, const unsigned nperfiles) {
+  const float radio = 1.0;
+  vector<glm::vec3> perfil;
+  for (int i = num_verts_per - 1; i >= 0; i--) {
+    float vec_x = radio / (num_verts_per - 1) * i;
+    float vec_y = -vec_x + radio;
+    perfil.push_back({vec_x, vec_y, 0.0});
+  }
+  inicializar(perfil, nperfiles);
+}
+
+Esfera::Esfera(const int num_verts_per, const unsigned nperfiles) {
+  const float radio = 1.0;
+  const float increment = glm::pi<float>() / (num_verts_per - 1);
+  vector<glm::vec3> perfil;
+  // Cuarto de circunferencia inferior
+  for (int i = 0; i < num_verts_per; i++) {
+    float vec_x = cos(-glm::half_pi<float>() + (increment * i));
+    float vec_y = sin(-glm::half_pi<float>() + (increment * i));
+    perfil.push_back({vec_x, vec_y, 0.0});
+  }
+  inicializar(perfil, nperfiles);
 }

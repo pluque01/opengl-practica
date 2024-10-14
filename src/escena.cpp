@@ -347,6 +347,10 @@ Escena2::Escena2() {
   using namespace std;
   cout << "Creando objetos de la práctica 2." << endl;
   objetos.push_back(new MallaPLY("beethoven.ply"));
+  objetos.push_back(new MallaRevolPLY("peon.ply", 6));
+  objetos.push_back(new Cilindro(2, 20));
+  objetos.push_back(new Cono(4, 20));
+  objetos.push_back(new Esfera(20, 20));
 }
 // -------------------------------------------------------------------------
 // COMPLETAR: práctica 3: completar constructor de 'Escena3'
