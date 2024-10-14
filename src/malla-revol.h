@@ -1,14 +1,15 @@
 // *********************************************************************
 // **
 // ** Asignatura: INFORMÁTICA GRÁFICA
-// ** 
-// ** Mallas indexadas creadas por revolución de un perfil (implementación). Clase 'MallaRevol' y derivadas.
+// **
+// ** Mallas indexadas creadas por revolución de un perfil (implementación).
+// Clase 'MallaRevol' y derivadas.
 // ** Copyright (C) 2016-2024 Carlos Ureña
 // **
-// ** Declaración de las clases 
-// **    + MallaRevol: malla indexada de triángulos obtenida por 
+// ** Declaración de las clases
+// **    + MallaRevol: malla indexada de triángulos obtenida por
 // **      revolución de un perfil (derivada de MallaInd)
-// **    + MallaRevolPLY: malla indexada de triángulos, obtenida 
+// **    + MallaRevolPLY: malla indexada de triángulos, obtenida
 // **      por revolución de un perfil leído de un PLY (derivada de MallaRevol)
 // **    + algunas clases derivadas de MallaRevol
 // **
@@ -30,44 +31,31 @@
 #ifndef IG_MALLAREVOL_HPP
 #define IG_MALLAREVOL_HPP
 
-#include <vector>          // usar std::vector
 #include <string>
+#include <vector> // usar std::vector
 
-#include "malla-ind.h"   // declaración de 'Objeto3D'
+#include "malla-ind.h" // declaración de 'Objeto3D'
 // ---------------------------------------------------------------------
 // clase para mallas indexadas obtenidas a partir de la revolución de un perfil
 
-class MallaRevol : public MallaInd
-{
-   private:
+class MallaRevol : public MallaInd {
+private:
+protected: //
+  MallaRevol() {
+  } // solo usable desde clases derivadas con constructores especificos
 
+  // Método que crea las tablas de vértices, triángulos, normales y cc.de.tt.
+  // a partir de un perfil y el número de copias que queremos de dicho perfil.
+  void inicializar(const std::vector<glm::vec3>
+                       &perfil, // tabla de vértices del perfil original
+                   const unsigned num_copias // número de copias del perfil
+  );
+};
+// ---------------------------------------------------------------------
 
-
-   protected: //
-
-   MallaRevol() {} // solo usable desde clases derivadas con constructores especificos
-
-   // Método que crea las tablas de vértices, triángulos, normales y cc.de.tt.
-   // a partir de un perfil y el número de copias que queremos de dicho perfil.
-   void inicializar
-   (
-      const std::vector<glm::vec3> & perfil,     // tabla de vértices del perfil original
-      const unsigned                 num_copias  // número de copias del perfil
-   ) ;
-} ;
-// --------------------------------------------------------------------- 
-
-
-
-class MallaRevolPLY : public MallaRevol
-{
-   public:
-   MallaRevolPLY( const std::string & nombre_arch,
-                  const unsigned nperfiles ) ;
-} ;
-
-
-
-
+class MallaRevolPLY : public MallaRevol {
+public:
+  MallaRevolPLY(const std::string &nombre_arch, const unsigned nperfiles);
+};
 
 #endif
