@@ -161,4 +161,19 @@ class MallaPiramideL : public MallaInd {
 public:
   MallaPiramideL();
 };
+
+class PiramideEstrellaZ : public MallaInd {
+public:
+  PiramideEstrellaZ(uint n);
+};
+
+class RejillaY : public MallaInd {
+public:
+  RejillaY(uint n, uint m);
+};
+
+class MallaTorre : public MallaInd {
+public:
+  MallaTorre(uint n);
+};
 #endif

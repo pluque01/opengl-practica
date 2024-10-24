@@ -34,6 +34,8 @@
 #include "seleccion.h" // para 'ColorDesdeIdent'
 #include "vaos-vbos.h"
 #include <cmath>
+#include <glm/ext/vector_uint3.hpp>
+#include <glm/gtx/string_cast.hpp>
 #include <glm/trigonometric.hpp>
 #include <sys/types.h>
 
@@ -544,5 +546,171 @@ MallaPiramideL::MallaPiramideL() : MallaInd("MallaPiramideL") {
       {3, 4, 5},
       {3, 4, 6},
   };
+}
+// ****************************************************************************
+// Clase 'PiramideEstrellaZ
+
+PiramideEstrellaZ::PiramideEstrellaZ(uint n)
+    : MallaInd("Estrella de n puntas") {
+  glm::vec3 centro = {0.5, 0.5, 0.0};
+  float radio_mayor = 0.5;
+  float radio_menor = radio_mayor / 2;
+  vertices.push_back(centro);
+  col_ver.push_back({1.0, 1.0, 1.0});
+
+  float angulo = 360.0 / static_cast<float>(n);
+
+  for (int i = 0; i < n; i++) {
+    // Para vertices mayores
+    float vert_x = centro[0] + radio_mayor * cos(glm::radians(angulo * i));
+    float vert_y = centro[1] + radio_mayor * sin(glm::radians(angulo * i));
+    vertices.push_back({vert_x, vert_y, 0.0});
+    col_ver.push_back({vert_x, vert_y, 0.0});
+
+    // Para vertices interiores
+    vert_x =
+        centro[0] + radio_menor * cos(glm::radians(angulo * i + angulo / 2));
+    vert_y =
+        centro[1] + radio_menor * sin(glm::radians(angulo * i + angulo / 2));
+    vertices.push_back({vert_x, vert_y, 0.0});
+    col_ver.push_back({vert_x, vert_y, 0.0});
+  }
+
+  vertices.push_back({0.5, 0.5, 0.5});
+  col_ver.push_back({1.0, 1.0, 1.0});
+
+  uint vert1 = 1, vert2 = 2;
+  for (int i = 0; i < 2 * n; i++) {
+    triangulos.push_back({0, vert1, vert2});
+    if (i < 2 * n) {
+      triangulos.push_back({vertices.size() - 1, vert1, vert2});
+    }
+    if (i % 2 == 0) {
+      vert1 += 2;
+    } else {
+      vert2 += 2;
+    }
+
+    if (vert1 > 2 * n) {
+      vert1 = 1;
+    }
+  }
+}
+// EstrellaPiramideZ::EstrellaPiramideZ(unsigned n)
+//     : MallaInd(" Estrella de n vértices") {
+//
+//   float cordX_Central = 0.5;
+//   float cordY_Central = 0.5;
+//   float cordZ_Central = 0.5;
+//   float radio = 0.5;
+//
+//   vertices.push_back({cordX_Central, cordY_Central, 0});
+//   col_ver.push_back({1, 1, 1});
+//
+//   float x;
+//   float y;
+//   float x1;
+//   float y1;
+//
+//   float angulo_ini = (360 / n) * M_PI / 180;
+//   float angulo_ini_abajo = angulo_ini / 2;
+//   float angulo = 0;
+//   float angulo_abajo = angulo_ini_abajo;
+//
+//   for (unsigned i = 0; i < n; i++) {
+//
+//     x1 = cordX_Central + (radio / 2) * cos(angulo_abajo);
+//     y1 = cordY_Central + (radio / 2) * sin(angulo_abajo);
+//     vertices.push_back({x1, y1, 0});
+//     col_ver.push_back({x1, y1, 0});
+//     angulo_abajo += angulo_ini;
+//
+//     angulo += angulo_ini;
+//     x = cordX_Central + radio * cos(angulo);
+//     y = cordY_Central + radio * sin(angulo);
+//     vertices.push_back({x, y, 0});
+//     col_ver.push_back({x, y, 0});
+//   }
+//
+//   vertices.push_back({cordX_Central, cordY_Central, cordZ_Central});
+//
+//   for (unsigned i = 1; i < 2 * n; i++) {
+//
+//     triangulos.push_back({0, i, i + 1});
+//     triangulos.push_back({0, i, 2 * n + 1});
+//   }
+//
+//   triangulos.push_back({0, 1, 2 * n});
+//   triangulos.push_back({0, 2 * n, 2 * n + 1});
+// }
+
+// ****************************************************************************
+// Clase 'RejillaY
+RejillaY::RejillaY(uint n, uint m) : MallaInd("Rejilla en plano Y") {
+  float x_incr = 1.0 / (n - 1);
+  float z_incr = 1.0 / (m - 1);
+
+  for (float i = 0; i < n; i++) {
+
+    for (float j = 0; j < m; j++) {
+      vertices.push_back({i * x_incr, 0, j * z_incr});
+      col_ver.push_back({i * x_incr, 0, j * z_incr});
+    }
+  }
+
+  // int aux = 0;
+  // for (unsigned i = 0; i < n - 1; i++) {
+  //
+  //   for (unsigned j = 0; j < m - 1; j++) {
+  //     triangulos.push_back({aux, aux + m, aux + 1});
+  //     triangulos.push_back({aux + 1, aux + 1 + m, aux + m});
+  //     aux++;
+  //   }
+  //   aux++;
+  // }
+
+  for (int i = 0; i < n - 1; i++) {
+    for (int j = 0; j < m - 1; j++) {
+      triangulos.push_back({i * m + j, i * m + j + 1, (i + 1) * m + j});
+      triangulos.push_back(
+          {i * m + j + 1, (i + 1) * m + j + 1, (i + 1) * m + j});
+    }
+  }
+}
+
+// ****************************************************************************
+// Clase 'RejillaY
+MallaTorre::MallaTorre(uint n) : MallaInd("Malla torre con n plantas") {
+  const float size = 0.5;
+  const int altura = 1;
+
+  for (int i = 0; i < n; i++) {
+    vertices.push_back({size, i * altura, size});
+    vertices.push_back({size, i * altura, -size});
+    vertices.push_back({-size, i * altura, -size});
+    vertices.push_back({-size, i * altura, size});
+
+    vertices.push_back({size, (i + 1) * altura, size});
+    vertices.push_back({size, (i + 1) * altura, -size});
+    vertices.push_back({-size, (i + 1) * altura, -size});
+    vertices.push_back({-size, (i + 1) * altura, size});
+  }
+
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < 4; j++) {
+      glm::uvec3 t1, t2;
+      if (j == 3) {
+        t1 = {i * 8 + j, i * 8, i * 8 + 4 + j};
+        t2 = {i * 8, i * 8 + 4 + j, i * 8 + 4};
+      } else {
+        t1 = {i * 8 + j, i * 8 + j + 1, i * 8 + 4 + j};
+        t2 = {i * 8 + j + 1, i * 8 + 4 + j, i * 8 + 4 + j + 1};
+      }
+      triangulos.push_back(t1);
+      triangulos.push_back(t2);
+      std::cout << "t1: " << glm::to_string(t1) << std::endl;
+      std::cout << "t2: " << glm::to_string(t2) << std::endl;
+    }
+  }
 }
 // -----------------------------------------------------------------------------------------------
