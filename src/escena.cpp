@@ -366,6 +366,7 @@ Escena2::Escena2() {
 Escena3::Escena3() {
   using namespace std;
   cout << "Creando objetos de la práctica 3." << endl;
+  objetos.push_back(new GrafoEstrellaX(9));
   objetos.push_back(new GrafoCubos);
 }
 
