@@ -18,3 +18,72 @@ public:
   unsigned leerNumParametros() const;
   void actualizarEstadoParametro(const unsigned iParam, const float tSec);
 };
+
+class BrazoMecanico : public NodoGrafoEscena {
+protected:
+  glm::mat4 *matriz_rotacion_inferior = nullptr;
+  glm::mat4 *matriz_rotacion_superior = nullptr;
+  glm::mat4 *matriz_translacion_gancho_derecho = nullptr;
+  glm::mat4 *matriz_translacion_gancho_izquierdo = nullptr;
+
+public:
+  BrazoMecanico();
+  unsigned leerNumParametros() const;
+  void actualizarEstadoParametro(const unsigned iParam, const float tSec);
+};
+
+class BaseBrazo : public NodoGrafoEscena {
+public:
+  static float altura;
+  BaseBrazo();
+};
+class Visagra : public NodoGrafoEscena {
+public:
+  static float altura;
+  static float radio;
+  Visagra();
+};
+class SoporteInferior : public NodoGrafoEscena {
+public:
+  static float altura;
+  static float base;
+  static float ancho;
+  SoporteInferior();
+};
+
+class BrazoInferior : public NodoGrafoEscena {
+public:
+  static float altura;
+  static float base;
+  static float ancho;
+  BrazoInferior();
+};
+class BrazoSuperior : public NodoGrafoEscena {
+public:
+  static float altura;
+  static float base;
+  static float ancho;
+  BrazoSuperior();
+};
+class BaseGancho : public NodoGrafoEscena {
+public:
+  static float altura;
+  static float base;
+  static float ancho;
+  BaseGancho();
+};
+class Gancho : public NodoGrafoEscena {
+public:
+  static float altura;
+  static float base;
+  static float ancho;
+  Gancho();
+};
+class GanchoIzquierdo : public NodoGrafoEscena {
+public:
+  GanchoIzquierdo();
+};
+class GanchoDerecho : public NodoGrafoEscena {
+public:
+  GanchoDerecho();
+};

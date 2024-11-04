@@ -7,6 +7,8 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/trigonometric.hpp>
 
+using namespace glm;
+
 GrafoCubos::GrafoCubos() {
   using namespace glm;
   NodoGrafoEscena *lateral = new NodoGrafoEscena();
@@ -62,4 +64,183 @@ void GrafoEstrellaX::actualizarEstadoParametro(const unsigned iParam,
   assert(iParam < leerNumParametros());
   float alpha = float((2 * M_PI) * 2.5 * tSec);
   *matriz_rotacion = (rotate(alpha, glm::vec3{0.0, 0.0, 1.0}));
+}
+
+BrazoMecanico::BrazoMecanico() {
+  agregar(new BaseBrazo());
+  unsigned ind_rotacion_inferior = agregar(rotate(0.0f, vec3(1.0, 0.0, 1.0)));
+  agregar(new BrazoInferior());
+  unsigned ind_rotacion_superior = agregar(rotate(0.0f, vec3(1.0, 0.0, 1.0)));
+  agregar(new BrazoSuperior());
+  agregar(new BaseGancho());
+
+  Gancho *gancho = new Gancho();
+
+  unsigned ind_translacion_gancho_izquierdo =
+      gancho->agregar(translate(vec3(0.0, 0.0, 0.0)));
+  gancho->agregar(new GanchoIzquierdo());
+  unsigned ind_translacion_gancho_derecho =
+      gancho->agregar(translate(vec3(0.0, 0.0, 0.0)));
+  gancho->agregar(new GanchoDerecho());
+  agregar(gancho);
+
+  matriz_rotacion_inferior = leerPtrMatriz(ind_rotacion_inferior);
+  matriz_rotacion_superior = leerPtrMatriz(ind_rotacion_superior);
+  matriz_translacion_gancho_derecho =
+      gancho->leerPtrMatriz(ind_translacion_gancho_derecho);
+  matriz_translacion_gancho_izquierdo =
+      gancho->leerPtrMatriz(ind_translacion_gancho_izquierdo);
+}
+unsigned BrazoMecanico::leerNumParametros() const { return 3; }
+void BrazoMecanico::actualizarEstadoParametro(const unsigned iParam,
+                                              const float tSec) {
+  assert(iParam < leerNumParametros());
+  switch (iParam) {
+  case 0:
+    *matriz_rotacion_inferior =
+        translate(vec3(
+            0.0, 2 * BaseBrazo::altura + SoporteInferior::altura + 0.1, 0.0)) *
+        rotate(float(M_PI / 4) * sin(float(M_PI * 0.3 * tSec)),
+               vec3(1.0, 0.0, 0.0)) *
+        translate(vec3(0.0,
+                       -(2 * BaseBrazo::altura + SoporteInferior::altura + 0.1),
+                       0.0));
+    break;
+  case 1: {
+    // Definimos los ángulos en radianes
+    float angleMin = 160 * M_PI / 180.0;   // 135 grados en radianes
+    float angleMax = 380.0 * M_PI / 180.0; // 225 grados en radianes
+
+    // Mapeamos el valor de sin a este rango
+    float angle =
+        angleMin + (angleMax - angleMin) * ((sin(M_PI * 0.3 * tSec) + 1) / 2.0);
+    *matriz_rotacion_superior =
+        translate(vec3(0.0,
+                       2 * BaseBrazo::altura + SoporteInferior::altura +
+                           2 * BrazoInferior::altura - BrazoSuperior::altura,
+                       0.0)) *
+        rotate(angle, vec3(1.0, 0.0, 0.0)) *
+        translate(vec3(0.0,
+                       -(2 * BaseBrazo::altura + SoporteInferior::altura +
+                         2 * BrazoInferior::altura - BrazoSuperior::altura),
+                       0.0));
+    break;
+  }
+  case 2:
+    float desplazamiento = abs((BaseGancho::ancho - 2 * Gancho::ancho) *
+                               sin(2 * M_PI * 0.1 * tSec));
+    *matriz_translacion_gancho_derecho =
+        translate(vec3(2 * desplazamiento, 0.0, 0.0));
+    *matriz_translacion_gancho_izquierdo =
+        translate(vec3(-(desplazamiento), 0.0, 0.0));
+    break;
+  }
+}
+
+float BaseBrazo::altura = 0.05;
+BaseBrazo::BaseBrazo() {
+  agregar(new SoporteInferior());
+  agregar(translate(vec3(0.0, altura, 0.0)));
+  agregar(scale(vec3(0.7, altura, 0.7)));
+  ponerColor(vec3(0.82, 0.65, 0.47));
+  agregar(new Cubo());
+}
+
+float Visagra::altura = 0.3;
+float Visagra::radio = 0.02;
+Visagra::Visagra() {
+  ponerColor(vec3(0.70, 0.70, 0.70));
+  agregar(scale(vec3(Visagra::altura, Visagra::radio, Visagra::radio)));
+  agregar(rotate(radians(90.0f), vec3(0.0, 0.0, 1.0)));
+  agregar(new Cilindro(2, 10));
+}
+
+float SoporteInferior::altura = 0.2;
+float SoporteInferior::base = 0.15;
+float SoporteInferior::ancho = 0.05;
+SoporteInferior::SoporteInferior() {
+  ponerColor(vec3(0.42, 0.26, 0.15));
+  NodoGrafoEscena *lateral = new NodoGrafoEscena();
+
+  lateral->agregar(translate(vec3(0.0, altura + 2 * BaseBrazo::altura, 0.0)));
+  lateral->agregar(scale(vec3(ancho, altura, base)));
+  lateral->agregar(new Cubo());
+
+  agregar(translate(vec3(0.15, 0.0, 0.0)));
+  agregar(lateral);
+  agregar(translate(vec3(-0.3, 0.0, 0.0)));
+  agregar(lateral);
+  agregar(translate(vec3(
+      2 * base, 2 * BaseBrazo::altura + SoporteInferior::altura + 0.1, 0.0)));
+  agregar(new Visagra());
+}
+
+float BrazoInferior::altura = 0.4;
+float BrazoInferior::base = 0.1;
+float BrazoInferior::ancho = 0.01;
+BrazoInferior::BrazoInferior() {
+  ponerColor(vec3(0.42, 0.26, 0.15));
+  NodoGrafoEscena *lateral = new NodoGrafoEscena();
+  lateral->agregar(
+      translate(vec3(0.0, altura + 2 * BaseBrazo::altura + 0.2, 0.0)));
+  lateral->agregar(scale(vec3(ancho, altura, base)));
+  lateral->agregar(new Cubo());
+  agregar(translate(vec3(0.15 - 2 * SoporteInferior::ancho, 0.0, 0.0)));
+  agregar(lateral);
+  agregar(translate(vec3(-0.3 + 4 * SoporteInferior::ancho, 0.0, 0.0)));
+  agregar(lateral);
+}
+float BrazoSuperior::altura = 0.1;
+float BrazoSuperior::base = 0.4;
+float BrazoSuperior::ancho = 0.01;
+BrazoSuperior::BrazoSuperior() {
+  ponerColor(vec3(0.42, 0.26, 0.15));
+  NodoGrafoEscena *lateral = new NodoGrafoEscena();
+  lateral->agregar(translate(vec3(
+      0.0, 2 * BaseBrazo::altura + 0.2 + 2 * BrazoInferior::altura - altura,
+      base - BrazoInferior::base)));
+  lateral->agregar(scale(vec3(ancho, altura, base)));
+  lateral->agregar(new Cubo());
+  agregar(translate(vec3(0.15, 0.0, 0.0)));
+  agregar(lateral);
+  agregar(translate(vec3(-0.3, 0.0, 0.0)));
+  agregar(lateral);
+  agregar(translate(vec3(
+      0.3, 2 * BaseBrazo::altura + 0.2 + 2 * BrazoInferior::altura - altura,
+      0.0)));
+  agregar(new Visagra());
+}
+
+float BaseGancho::altura = 0.05;
+float BaseGancho::base = 0.1;
+float BaseGancho::ancho = 0.2;
+BaseGancho::BaseGancho() {
+  ponerColor(vec3(0.29, 0.29, 0.29));
+  agregar(translate(
+      vec3(0.0, BaseBrazo::altura + 0.2 + 2 * BrazoInferior::altura - altura,
+           2 * BrazoSuperior::base - base)));
+  agregar(scale(vec3(ancho, altura, base)));
+  agregar(new Cubo());
+}
+
+float Gancho::altura = 0.03;
+float Gancho::base = 0.1;
+float Gancho::ancho = 0.03;
+Gancho::Gancho() { ponerColor(vec3(0.29, 0.29, 0.29)); }
+
+GanchoIzquierdo::GanchoIzquierdo() {
+  agregar(translate(vec3(-Gancho::ancho,
+                         BaseBrazo::altura + 0.2 + 2 * BrazoInferior::altura -
+                             BaseGancho::altura,
+                         2 * BrazoSuperior::base + Gancho::base)));
+  agregar(scale(vec3(Gancho::ancho, Gancho::altura, Gancho::base)));
+  agregar(new Cubo());
+}
+GanchoDerecho::GanchoDerecho() {
+  agregar(translate(vec3(Gancho::ancho,
+                         BaseBrazo::altura + 0.2 + 2 * BrazoInferior::altura -
+                             BaseGancho::altura,
+                         2 * BrazoSuperior::base + Gancho::base)));
+  agregar(scale(vec3(Gancho::ancho, Gancho::altura, Gancho::base)));
+  agregar(new Cubo());
 }
