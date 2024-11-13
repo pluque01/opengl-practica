@@ -31,8 +31,8 @@
 // **
 // *********************************************************************
 
-#include "camara.h"
 #include "ig-aux.h"
+#include "camara.h"
 #include <algorithm> // std::min, std::max
 #include <cmath>     // std::cos, std::sin
 
