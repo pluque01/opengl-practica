@@ -1,3 +1,5 @@
+// Nombre: Pablo, Apellidos: Luque Salguero, Titulación: GIIADE
+// Email: pluque01@correo.ugr.es, DNI: 20100264N
 #include "grafo-escena.h"
 class GrafoCubos : public NodoGrafoEscena {
 protected:
@@ -37,11 +39,11 @@ public:
   static float altura;
   BaseBrazo();
 };
-class Visagra : public NodoGrafoEscena {
+class Tornillo : public NodoGrafoEscena {
 public:
   static float altura;
   static float radio;
-  Visagra();
+  Tornillo();
 };
 class SoporteInferior : public NodoGrafoEscena {
 public:

@@ -1,3 +1,5 @@
+// Nombre: Pablo, Apellidos: Luque Salguero, Titulación: GIIADE
+// Email: pluque01@correo.ugr.es, DNI: 20100264N
 #include "modelo-jer.h"
 #include "grafo-escena.h"
 #include "malla-ind.h"
@@ -107,11 +109,9 @@ void BrazoMecanico::actualizarEstadoParametro(const unsigned iParam,
                        0.0));
     break;
   case 1: {
-    // Definimos los ángulos en radianes
-    float angleMin = 160 * M_PI / 180.0;   // 135 grados en radianes
-    float angleMax = 380.0 * M_PI / 180.0; // 225 grados en radianes
+    float angleMin = 160.0 * M_PI / 180.0;
+    float angleMax = 380.0 * M_PI / 180.0;
 
-    // Mapeamos el valor de sin a este rango
     float angle =
         angleMin + (angleMax - angleMin) * ((sin(M_PI * 0.3 * tSec) + 1) / 2.0);
     *matriz_rotacion_superior =
@@ -127,8 +127,8 @@ void BrazoMecanico::actualizarEstadoParametro(const unsigned iParam,
     break;
   }
   case 2:
-    float desplazamiento = abs((BaseGancho::ancho - 2 * Gancho::ancho) *
-                               sin(2 * M_PI * 0.1 * tSec));
+    float desplazamiento =
+        abs((BaseGancho::ancho - 2 * Gancho::ancho) * sin(M_PI * 0.2 * tSec));
     *matriz_translacion_gancho_derecho =
         translate(vec3(2 * desplazamiento, 0.0, 0.0));
     *matriz_translacion_gancho_izquierdo =
@@ -146,11 +146,11 @@ BaseBrazo::BaseBrazo() {
   agregar(new Cubo());
 }
 
-float Visagra::altura = 0.3;
-float Visagra::radio = 0.02;
-Visagra::Visagra() {
+float Tornillo::altura = 0.3;
+float Tornillo::radio = 0.02;
+Tornillo::Tornillo() {
   ponerColor(vec3(0.70, 0.70, 0.70));
-  agregar(scale(vec3(Visagra::altura, Visagra::radio, Visagra::radio)));
+  agregar(scale(vec3(Tornillo::altura, Tornillo::radio, Tornillo::radio)));
   agregar(rotate(radians(90.0f), vec3(0.0, 0.0, 1.0)));
   agregar(new Cilindro(2, 10));
 }
@@ -160,19 +160,20 @@ float SoporteInferior::base = 0.15;
 float SoporteInferior::ancho = 0.05;
 SoporteInferior::SoporteInferior() {
   ponerColor(vec3(0.42, 0.26, 0.15));
-  NodoGrafoEscena *lateral = new NodoGrafoEscena();
+  NodoGrafoEscena *lateral_soporte_inferior = new NodoGrafoEscena();
 
-  lateral->agregar(translate(vec3(0.0, altura + 2 * BaseBrazo::altura, 0.0)));
-  lateral->agregar(scale(vec3(ancho, altura, base)));
-  lateral->agregar(new Cubo());
+  lateral_soporte_inferior->agregar(
+      translate(vec3(0.0, altura + 2 * BaseBrazo::altura, 0.0)));
+  lateral_soporte_inferior->agregar(scale(vec3(ancho, altura, base)));
+  lateral_soporte_inferior->agregar(new Cubo());
 
   agregar(translate(vec3(0.15, 0.0, 0.0)));
-  agregar(lateral);
+  agregar(lateral_soporte_inferior);
   agregar(translate(vec3(-0.3, 0.0, 0.0)));
-  agregar(lateral);
+  agregar(lateral_soporte_inferior);
   agregar(translate(vec3(
       2 * base, 2 * BaseBrazo::altura + SoporteInferior::altura + 0.1, 0.0)));
-  agregar(new Visagra());
+  agregar(new Tornillo());
 }
 
 float BrazoInferior::altura = 0.4;
@@ -180,35 +181,35 @@ float BrazoInferior::base = 0.1;
 float BrazoInferior::ancho = 0.01;
 BrazoInferior::BrazoInferior() {
   ponerColor(vec3(0.42, 0.26, 0.15));
-  NodoGrafoEscena *lateral = new NodoGrafoEscena();
-  lateral->agregar(
+  NodoGrafoEscena *lateral_brazo_inferior = new NodoGrafoEscena();
+  lateral_brazo_inferior->agregar(
       translate(vec3(0.0, altura + 2 * BaseBrazo::altura + 0.2, 0.0)));
-  lateral->agregar(scale(vec3(ancho, altura, base)));
-  lateral->agregar(new Cubo());
+  lateral_brazo_inferior->agregar(scale(vec3(ancho, altura, base)));
+  lateral_brazo_inferior->agregar(new Cubo());
   agregar(translate(vec3(0.15 - 2 * SoporteInferior::ancho, 0.0, 0.0)));
-  agregar(lateral);
+  agregar(lateral_brazo_inferior);
   agregar(translate(vec3(-0.3 + 4 * SoporteInferior::ancho, 0.0, 0.0)));
-  agregar(lateral);
+  agregar(lateral_brazo_inferior);
 }
 float BrazoSuperior::altura = 0.1;
 float BrazoSuperior::base = 0.4;
 float BrazoSuperior::ancho = 0.01;
 BrazoSuperior::BrazoSuperior() {
   ponerColor(vec3(0.42, 0.26, 0.15));
-  NodoGrafoEscena *lateral = new NodoGrafoEscena();
-  lateral->agregar(translate(vec3(
+  NodoGrafoEscena *lateral_brazo_superior = new NodoGrafoEscena();
+  lateral_brazo_superior->agregar(translate(vec3(
       0.0, 2 * BaseBrazo::altura + 0.2 + 2 * BrazoInferior::altura - altura,
       base - BrazoInferior::base)));
-  lateral->agregar(scale(vec3(ancho, altura, base)));
-  lateral->agregar(new Cubo());
+  lateral_brazo_superior->agregar(scale(vec3(ancho, altura, base)));
+  lateral_brazo_superior->agregar(new Cubo());
   agregar(translate(vec3(0.15, 0.0, 0.0)));
-  agregar(lateral);
+  agregar(lateral_brazo_superior);
   agregar(translate(vec3(-0.3, 0.0, 0.0)));
-  agregar(lateral);
+  agregar(lateral_brazo_superior);
   agregar(translate(vec3(
       0.3, 2 * BaseBrazo::altura + 0.2 + 2 * BrazoInferior::altura - altura,
       0.0)));
-  agregar(new Visagra());
+  agregar(new Tornillo());
 }
 
 float BaseGancho::altura = 0.05;

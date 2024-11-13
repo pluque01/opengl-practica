@@ -1,14 +1,17 @@
+// Nombre: Pablo, Apellidos: Luque Salguero, Titulación: GIIADE
+// Email: pluque01@correo.ugr.es, DNI: 20100264N
 // *********************************************************************
 // **
 // ** Asignatura: INFORMÁTICA GRÁFICA
-// ** 
+// **
 // ** Gestión de animaciones (declaraciones)
 // ** Copyright (C) 2016-2024 Carlos Ureña
 // **
 // ** Declaraciones de las funciones:
 // **    + ActualizarEstado: actualiza el estado de un objeto 3D
 // **    + AnimacionesActivadas: indica si las animaciones están activadas o no
-// **    + ProcesarTeclaAnimacion: procesa una pulsación de una tecla estando baja la tecla 'A'
+// **    + ProcesarTeclaAnimacion: procesa una pulsación de una tecla estando
+// baja la tecla 'A'
 // **
 // ** This program is free software: you can redistribute it and/or modify
 // ** it under the terms of the GNU General Public License as published by
@@ -28,14 +31,12 @@
 #ifndef ANIMACION_H
 #define ANIMACION_H
 
-#include "objeto3d.h"
 #include "ig-aux.h"
+#include "objeto3d.h"
 
 // #####################################
 // Funciones usadas para animacion:
 // ####################################
-
-
 
 // Función  que actuliza periodicamente el estado del objeto
 // Si el objeto no tiene parámetros: no hace nada y devuelve false
@@ -43,13 +44,13 @@
 //    calcula el tiempo real transcurrido desde la última llamada a esta función
 //    actualiza el estado del objeto, usando ese tiempo transcurrido
 
-bool ActualizarEstado( Objeto3D & objeto ) ;
+bool ActualizarEstado(Objeto3D &objeto);
 
 // devuelve true sii las nimaciones están activadas
-bool AnimacionesActivadas() ;
+bool AnimacionesActivadas();
 
-// gestiona una tecla correspondiente a animaciones (se llama cuando se pulsa una
-// tecla la vez que la tecla 'A' está pulsada)
-bool ProcesarTeclaAnimacion( Objeto3D * objeto, int glfw_key ) ;
+// gestiona una tecla correspondiente a animaciones (se llama cuando se pulsa
+// una tecla la vez que la tecla 'A' está pulsada)
+bool ProcesarTeclaAnimacion(Objeto3D *objeto, int glfw_key);
 
 #endif // ANIMACION_H

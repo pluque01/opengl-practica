@@ -1,8 +1,10 @@
+// Nombre: Pablo, Apellidos: Luque Salguero, Titulación: GIIADE
+// Email: pluque01@correo.ugr.es, DNI: 20100264N
 // *********************************************************************
 // **
 // ** Asignatura: INFORMÁTICA GRÁFICA
-// ** 
-// ** Funciones de gestión de la selección (declaración). 
+// **
+// ** Funciones de gestión de la selección (declaración).
 // ** Copyright (C) 2016-2024 Carlos Ureña
 // **
 // ** Declaración de las funciones:
@@ -28,18 +30,14 @@
 #ifndef SELECCION_H
 #define SELECCION_H
 
-#include "objeto3d.h"
 #include "escena.h"
-
+#include "objeto3d.h"
 
 // calcula un color usando un identificador entero no negativo
-glm::vec4 ColorDesdeIdent( const int ident )  ; // 0 ≤ ident < 2^24
+glm::vec4 ColorDesdeIdent(const int ident); // 0 ≤ ident < 2^24
 
 // leer un identificador entero codificado en el color de un pixel en el
 // framebuffer activo actualmente
-int LeerIdentEnPixel( int xpix, int ypix );
-
-
-
+int LeerIdentEnPixel(int xpix, int ypix);
 
 #endif // SELECCION_H

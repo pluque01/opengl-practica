@@ -1,17 +1,20 @@
+// Nombre: Pablo, Apellidos: Luque Salguero, Titulación: GIIADE
+// Email: pluque01@correo.ugr.es, DNI: 20100264N
 // *********************************************************************
 // **
 // ** Asignatura: INFORMÁTICA GRÁFICA
-// ** 
+// **
 // ** Gestión de eventos de ratón (declaraciones)
 // ** Copyright (C) 2016-2024 Carlos Ureña
 // **
-// ** Declaración de las funciones gestoras de eventos (FGEs) producidos 
+// ** Declaración de las funciones gestoras de eventos (FGEs) producidos
 // ** por el ratón:
 // **
 // **     + FGE_Scroll - movimiento de la rueda del ratón
 // **     + FGE_PulsarLevantarBotonRaton - botones del ratón
-// **     + FGE_MovimientoRaton - movimiento del ratón (con un botón pulsado, si no se ignora)
-// **     
+// **     + FGE_MovimientoRaton - movimiento del ratón (con un botón pulsado, si
+// no se ignora)
+// **
 // ** This program is free software: you can redistribute it and/or modify
 // ** it under the terms of the GNU General Public License as published by
 // ** the Free Software Foundation, either version 3 of the License, or
@@ -27,28 +30,27 @@
 // **
 // *********************************************************************
 
-#ifndef EVENTOS_RATON_H 
-#define EVENTOS_RATON_H 
+#ifndef EVENTOS_RATON_H
+#define EVENTOS_RATON_H
 
-#include "ig-aux.h"  // include cabeceras de opengl / glfw / glew
-
-
+#include "ig-aux.h" // include cabeceras de opengl / glfw / glew
 
 // --------------------------------------------------------------------
 // función gestora del evento de hacer scroll
 // (se registra con 'glfwSetScrollCallback'
 
-void FGE_Scroll( GLFWwindow* window, double xoffset, double yoffset  );
+void FGE_Scroll(GLFWwindow *window, double xoffset, double yoffset);
 
 // --------------------------------------------------------------------
 // función gestora del evento de pulsar/levantar tecla del ratón
 // (se registra con 'glfwSetMouseButtonCallback'
 
-void FGE_PulsarLevantarBotonRaton( GLFWwindow* window, int button, int action, int mods );
+void FGE_PulsarLevantarBotonRaton(GLFWwindow *window, int button, int action,
+                                  int mods);
 
 // --------------------------------------------------------------------
 // función gestora del evento de ratón movido a una nueva posición
 // (se registra con 'glfwSetCursorPosCallback'
 
-void FGE_MovimientoRaton( GLFWwindow* window, double xpos, double ypos );
-#endif 
+void FGE_MovimientoRaton(GLFWwindow *window, double xpos, double ypos);
+#endif

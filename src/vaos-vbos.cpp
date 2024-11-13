@@ -1,4 +1,5 @@
-
+// Nombre: Pablo, Apellidos: Luque Salguero, Titulación: GIIADE
+// Email: pluque01@correo.ugr.es, DNI: 20100264N
 // *********************************************************************
 // **
 // ** Asignatura: INFORMÁTICA GRÁFICA
@@ -137,7 +138,7 @@ DescrVBOAtribs::DescrVBOAtribs(const unsigned p_index,
 
 void DescrVBOAtribs::copiarDatos() {
   assert(data != nullptr); // 'data' debe apuntar a los datos originales
-  assert(0 < tot_size); // 'tot_size' debe tener el tamaño total de los datos
+  assert(0 < tot_size);    // 'tot_size' debe tener el tamaño total de los datos
   assert(own_data == nullptr); // impide copiar los datos dos veces
 
   own_data = new unsigned char[tot_size]; // reservar memoria
@@ -477,7 +478,7 @@ void DescrVAO::draw(const GLenum mode) {
 
   CError();
   assert(dvbo_atributo[0] !=
-         nullptr); // asegurarnos que hay una tabla de coordenadas de posición.
+         nullptr);  // asegurarnos que hay una tabla de coordenadas de posición.
   check_mode(mode); // comprobar que el modo es el correcto.
 
   // COMPLETAR: práctica 1: visualizar el VAO

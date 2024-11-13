@@ -1,13 +1,16 @@
+// Nombre: Pablo, Apellidos: Luque Salguero, Titulación: GIIADE
+// Email: pluque01@correo.ugr.es, DNI: 20100264N
 // *********************************************************************
 // **
 // ** Asignatura: INFORMÁTICA GRÁFICA
-// ** 
-// ** Gestión de eventos de teclado (declaraciones). Función 'FGE_PulsarLevantarTecla'.
+// **
+// ** Gestión de eventos de teclado (declaraciones). Función
+// 'FGE_PulsarLevantarTecla'.
 // ** Copyright (C) 2016-2024 Carlos Ureña
 // **
 // ** Declaración de:
 // **     + función 'FGE_PulsarLevantarTecla'
-// **     
+// **
 // ** This program is free software: you can redistribute it and/or modify
 // ** it under the terms of the GNU General Public License as published by
 // ** the Free Software Foundation, either version 3 of the License, or
@@ -23,14 +26,14 @@
 // **
 // *********************************************************************
 
-#ifndef EVENTOS_TECLADO_H 
-#define EVENTOS_TECLADO_H 
+#ifndef EVENTOS_TECLADO_H
+#define EVENTOS_TECLADO_H
 
-#include "ig-aux.h"  // include cabeceras de opengl / glfw / glew
-
+#include "ig-aux.h" // include cabeceras de opengl / glfw / glew
 
 // ---------------------------------------------------------------------
 // F.G. del evento de pulsar o levantar una tecla
 
-void FGE_PulsarLevantarTecla( GLFWwindow* window, int key, int scancode, int action, int mods );
-#endif 
+void FGE_PulsarLevantarTecla(GLFWwindow *window, int key, int scancode,
+                             int action, int mods);
+#endif
