@@ -681,7 +681,7 @@ RejillaY::RejillaY(uint n, uint m) : MallaInd("Rejilla en plano Y") {
 }
 
 // ****************************************************************************
-// Clase 'RejillaY
+// Clase 'MallaTorre
 MallaTorre::MallaTorre(uint n) : MallaInd("Malla torre con n plantas") {
   const float size = 0.5;
   const int altura = 1;

@@ -119,8 +119,8 @@ Esfera::Esfera(const int num_verts_per, const unsigned nperfiles) {
   vector<glm::vec3> perfil;
   // Cuarto de circunferencia inferior
   for (int i = 0; i < num_verts_per; i++) {
-    float vec_x = cos(-glm::half_pi<float>() + (increment * i));
-    float vec_y = sin(-glm::half_pi<float>() + (increment * i));
+    float vec_x = radio * cos(-glm::half_pi<float>() + (increment * i));
+    float vec_y = radio * sin(-glm::half_pi<float>() + (increment * i));
     perfil.push_back({vec_x, vec_y, 0.0});
   }
   inicializar(perfil, nperfiles);
