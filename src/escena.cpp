@@ -48,6 +48,8 @@
 #include "materiales-luces.h"
 #include "modelo-jer.h"
 #include "objeto3d.h"
+// #include "practicap3.h"
+#include "examen-ec-p123.h"
 
 // -----------------------------------------------------------------------------------------------
 
@@ -321,7 +323,7 @@ Escena1::Escena1() {
   using namespace std;
   cout << "Creando objetos de la práctica 1." << endl;
 
-  objetos.push_back(new Cubo());
+  // objetos.push_back(new Cubo());
 
   // COMPLETAR: práctica 1: añadir resto de objetos a la escena 1
   //
@@ -330,13 +332,14 @@ Escena1::Escena1() {
   //
   // .......
 
-  objetos.push_back(new Tetraedro());
-  objetos.push_back(new CuboColores());
-  objetos.push_back(new EstrellaZ(8));
-  objetos.push_back(new CasaX());
-  objetos.push_back(new MallaTriangulo());
-  objetos.push_back(new MallaCuadrado());
-  objetos.push_back(new MallaPiramideL());
+  objetos.push_back(new EX123_Ejercicio1());
+  // objetos.push_back(new Tetraedro());
+  // objetos.push_back(new CuboColores());
+  // objetos.push_back(new EstrellaZ(8));
+  // objetos.push_back(new CasaX());
+  // objetos.push_back(new MallaTriangulo());
+  // objetos.push_back(new MallaCuadrado());
+  // objetos.push_back(new MallaPiramideL());
 }
 
 // -------------------------------------------------------------------------
@@ -349,14 +352,15 @@ Escena1::Escena1() {
 Escena2::Escena2() {
   using namespace std;
   cout << "Creando objetos de la práctica 2." << endl;
-  objetos.push_back(new MallaPLY("beethoven.ply"));
-  objetos.push_back(new MallaRevolPLY("peon.ply", 6));
-  objetos.push_back(new Cilindro(2, 20));
-  objetos.push_back(new Cono(4, 20));
-  objetos.push_back(new Esfera(20, 20));
-  objetos.push_back(new PiramideEstrellaZ(8));
-  objetos.push_back(new RejillaY(3, 4));
-  objetos.push_back(new MallaTorre(4));
+  objetos.push_back(new EX123_Ejercicio2(8));
+  // objetos.push_back(new MallaPLY("beethoven.ply"));
+  // objetos.push_back(new MallaRevolPLY("peon.ply", 6));
+  // objetos.push_back(new Cilindro(2, 20));
+  // objetos.push_back(new Cono(4, 20));
+  // objetos.push_back(new Esfera(20, 20));
+  // objetos.push_back(new PiramideEstrellaZ(8));
+  // objetos.push_back(new RejillaY(3, 4));
+  // objetos.push_back(new MallaTorre(4));
 }
 // -------------------------------------------------------------------------
 // COMPLETAR: práctica 3: completar constructor de 'Escena3'
@@ -368,9 +372,19 @@ Escena2::Escena2() {
 Escena3::Escena3() {
   using namespace std;
   cout << "Creando objetos de la práctica 3." << endl;
-  objetos.push_back(new BrazoMecanico);
-  objetos.push_back(new GrafoEstrellaX(9));
-  objetos.push_back(new GrafoCubos);
+  objetos.push_back(new EX123_Ejercicio3(2, 0.5));
+  // objetos.push_back(new Ejercicio3_EX());
+  // objetos.push_back(new Ejercicio2_EX(7));
+  // objetos.push_back(new Ejercicio1_EX());
+  // objetos.push_back(new Sombrilla(6));
+  // objetos.push_back(new Ejercicio5_Flecha(0.5, 0.5));
+  // objetos.push_back(new Ejercicio4());
+  // objetos.push_back(new Ejercicio3(20, 20));
+  // objetos.push_back(new Ejercicio2());
+  // objetos.push_back(new Ejercicio1());
+  // objetos.push_back(new BrazoMecanico);
+  // objetos.push_back(new GrafoEstrellaX(9));
+  // objetos.push_back(new GrafoCubos);
 }
 
 // ----------------------------------------------------------------------------
