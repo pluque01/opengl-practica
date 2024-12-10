@@ -86,12 +86,13 @@ AplicacionIG::AplicacionIG() {
   // hacer 'push_back' en el vector de escenas de una instancia de 'Escena3'
   // ......
 
-  escenas.push_back(new Escena3());
+  // escenas.push_back(new Escena3());
 
   // COMPLETAR: práctica 4: añadir escena de la práctica 4
   //
   // hacer 'push_back' en el vector de escenas de una instancia de 'Escena4'
   // ......
+  escenas.push_back(new Escena4());
 
   // COMPLETAR: práctica 5: añadir escena de la práctica 5
   //

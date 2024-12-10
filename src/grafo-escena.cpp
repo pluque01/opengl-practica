@@ -99,6 +99,9 @@ void NodoGrafoEscena::visualizarGL() {
   PilaMateriales *pila_materiales = aplicacionIG->pila_materiales;
   assert(pila_materiales != nullptr);
 
+  if (aplicacionIG->iluminacion)
+    pila_materiales->push();
+
   // COMPLETAR: práctica 3: implementar la visualización del nodo
   //
   // Se deben de recorrer las entradas y llamar recursivamente de visualizarGL,
@@ -130,6 +133,11 @@ void NodoGrafoEscena::visualizarGL() {
     case TipoEntNGE::transformacion:
       cauce->compMM(*(entradas[i].matriz));
       break;
+    case TipoEntNGE::material:
+      if (aplicacionIG->iluminacion) {
+        pila_materiales->activar(entradas[i].material);
+      }
+      break;
     }
   }
   // 4. Restaurar la copia guardada de la matriz de modelado (con 'popMM')
@@ -151,8 +159,10 @@ void NodoGrafoEscena::visualizarGL() {
   //   materiales
   //   3. al finalizar, hacer 'pop' de la pila de materiales (restaura el
   //   material activo al inicio)
-
   // ......
+  if (aplicacionIG->iluminacion) {
+    pila_materiales->pop();
+  }
 }
 
 // *****************************************************************************
@@ -218,7 +228,18 @@ void NodoGrafoEscena::visualizarNormalesGL() {
   // - ignorar las entradas de tipo material, y la gestión de materiales (se usa
   // sin iluminación)
 
-  // .......
+  cauce->pushMM();
+  for (unsigned int i = 0; i < entradas.size(); i++) {
+    switch (entradas[i].tipo) {
+    case TipoEntNGE::objeto:
+      entradas[i].objeto->visualizarNormalesGL();
+      break;
+    case TipoEntNGE::transformacion:
+      cauce->compMM(*(entradas[i].matriz));
+      break;
+    }
+  }
+  cauce->popMM();
 }
 
 // -----------------------------------------------------------------------------

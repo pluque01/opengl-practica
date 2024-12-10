@@ -4,6 +4,7 @@
 #include "grafo-escena.h"
 #include "malla-ind.h"
 #include "malla-revol.h"
+#include "materiales-luces.h"
 #include <cassert>
 #include <glm/ext/vector_float3.hpp>
 #include <glm/gtx/transform.hpp>
@@ -244,4 +245,11 @@ GanchoDerecho::GanchoDerecho() {
                          2 * BrazoSuperior::base + Gancho::base)));
   agregar(scale(vec3(Gancho::ancho, Gancho::altura, Gancho::base)));
   agregar(new Cubo());
+}
+
+NodoCubo24::NodoCubo24() {
+  // agregar(new Material(new Textura("window-icon.jpg"), 0.5, 0.5, 0.5, 40.0));
+
+  agregar(new Material(new Textura("window-icon.jpg"), 0.2, 0.8, 0.0, 1.0));
+  agregar(new Cubo24());
 }

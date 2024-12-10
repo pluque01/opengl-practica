@@ -68,7 +68,8 @@ void FGE_PulsarLevantarTecla(GLFWwindow *window, int key, int scancode,
     // devuelve 'true', forzar revisualizar escena (asignar 'true' a
     // 'apl->revisualizar_escena')
     // .....
-
+    aplicacionIG->revisualizar_escena =
+        ProcesaTeclaFuenteLuz(escena->colFuentes(), key);
     return; // finalizar la f.g.e, ya que si está la tecla L pulsada no se mira
             // ninguna otra tecla.
   }

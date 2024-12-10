@@ -63,6 +63,7 @@ MallaInd::MallaInd(const std::string &nombreIni) {
 // calculada
 
 void MallaInd::calcularNormalesTriangulos() {
+  using namespace glm;
 
   // si ya está creada la tabla de normales de triángulos, no es necesario
   // volver a crearla
@@ -75,6 +76,19 @@ void MallaInd::calcularNormalesTriangulos() {
 
   // COMPLETAR: Práctica 4: creación de la tabla de normales de triángulos
   // ....
+  for (unsigned i = 0; i < nt; i++) {
+    vec3 a = vertices[triangulos[i][0]];
+    vec3 b = vertices[triangulos[i][1]];
+    vec3 c = vertices[triangulos[i][2]];
+    vec3 n = cross(b - a, c - a);
+    // si la longitud del vector es cero no se intenta normalizar
+    if (length(n) == 0) {
+      n = vec3(0.0, 0.0, 0.0);
+    } else {
+      n = normalize(n);
+    }
+    nor_tri.push_back(n);
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -85,6 +99,36 @@ void MallaInd::calcularNormales() {
   // COMPLETAR: en la práctica 4: calculo de las normales de la malla
   // se debe invocar en primer lugar 'calcularNormalesTriangulos'
   // .......
+
+  calcularNormalesTriangulos();
+
+  std::map<int, vec3> normales_vertice;
+
+  // Inicializar la tabla de normales de vértices a 0
+  for (const auto &tri : triangulos) {
+    normales_vertice[tri[0]] = vec3(0, 0, 0);
+    normales_vertice[tri[1]] = vec3(0, 0, 0);
+    normales_vertice[tri[2]] = vec3(0, 0, 0);
+  }
+
+  // Para cada triángulo, sumar su normal a los vértices que lo compon
+  for (int i = 0; i < triangulos.size(); i++) {
+    vec3 n = nor_tri[i];
+    normales_vertice[triangulos[i][0]] += n;
+    normales_vertice[triangulos[i][1]] += n;
+    normales_vertice[triangulos[i][2]] += n;
+  }
+
+  // Normalizar las normales de los vértices
+  for (auto &par : normales_vertice) {
+    if (length(par.second) == 0) {
+      par.second = vec3(0, 0, 0);
+    } else {
+      par.second = normalize(par.second);
+    }
+    // Insertar las normales en las tabla
+    nor_ver.push_back(par.second);
+  }
 }
 
 // --------------------------------------------------------------------------------------------
@@ -156,11 +200,11 @@ void MallaInd::visualizarGL() {
           new DescrVBOAtribs(ind_atrib_normales, nor_ver);
       dvao->agregar(norv_dvbo);
     }
-    if (nor_tri.size() > 0) {
-      DescrVBOAtribs *nort_dvbo =
-          new DescrVBOAtribs(ind_atrib_normales, nor_tri);
-      dvao->agregar(nort_dvbo);
-    }
+    // if (nor_tri.size() > 0) {
+    //   DescrVBOAtribs *nort_dvbo =
+    //       new DescrVBOAtribs(ind_atrib_normales, nor_tri);
+    //   dvao->agregar(nort_dvbo);
+    // }
     if (cc_tt_ver.size() > 0) {
       DescrVBOAtribs *cc_tt_dvbo =
           new DescrVBOAtribs(ind_atrib_coord_text, cc_tt_ver);
@@ -201,9 +245,9 @@ void MallaInd::visualizarGeomGL() {
   if (!nor_ver.empty()) {
     dvao->habilitarAtrib(ind_atrib_normales, false);
   }
-  if (!nor_tri.empty()) {
-    dvao->habilitarAtrib(ind_atrib_normales, false);
-  }
+  // if (!nor_tri.empty()) {
+  //   dvao->habilitarAtrib(ind_atrib_normales, false);
+  // }
   if (!cc_tt_ver.empty()) {
     dvao->habilitarAtrib(ind_atrib_coord_text, false);
   }
@@ -218,9 +262,9 @@ void MallaInd::visualizarGeomGL() {
   if (!nor_ver.empty()) {
     dvao->habilitarAtrib(ind_atrib_normales, true);
   }
-  if (!nor_tri.empty()) {
-    dvao->habilitarAtrib(ind_atrib_normales, true);
-  }
+  // if (!nor_tri.empty()) {
+  //   dvao->habilitarAtrib(ind_atrib_normales, true);
+  // }
   if (!cc_tt_ver.empty()) {
     dvao->habilitarAtrib(ind_atrib_coord_text, true);
   }
@@ -275,8 +319,17 @@ void MallaInd::visualizarNormalesGL() {
   // *2* Visualizar el VAO de normales, usando el método 'draw' del descriptor,
   // con el
   //       tipo de primitiva 'GL_LINES'.
-
-  //  ..........
+  if (dvao_normales == nullptr) {
+    for (int i = 0; i < vertices.size(); i++) {
+      segmentos_normales.push_back(vertices[i]);
+      segmentos_normales.push_back(
+          vertices[i] + 0.2f * nor_ver[i]); // 0.2f es el factor de longitud
+    }
+    DescrVBOAtribs *pos_dvbo =
+        new DescrVBOAtribs(ind_atrib_posiciones, segmentos_normales);
+    dvao_normales = new DescrVAO(1, pos_dvbo);
+  }
+  dvao_normales->draw(GL_LINES);
 }
 
 // -----------------------------------------------------------------------------
@@ -320,6 +373,7 @@ MallaPLY::MallaPLY(const std::string &nombre_arch) {
   // COMPLETAR: práctica 4: invocar  a 'calcularNormales' para el cálculo de
   // normales
   // .................
+  calcularNormales();
 }
 
 // ****************************************************************************
@@ -348,6 +402,7 @@ Cubo::Cubo() : MallaInd("cubo 8 vértices") {
       {0, 6, 4}, {0, 2, 6}, // Z-
       {1, 5, 7}, {1, 7, 3}  // Z+ (+1)
   };
+  calcularNormales();
 }
 
 // ****************************************************************************
@@ -365,6 +420,7 @@ Tetraedro::Tetraedro(const glm::vec3 &p_nuevo_color)
 
   triangulos = {{0, 1, 2}, {0, 1, 3}, {1, 2, 3}, {0, 2, 3}};
   ponerColor(p_nuevo_color);
+  calcularNormales();
 }
 
 // ****************************************************************************
@@ -710,9 +766,132 @@ MallaTorre::MallaTorre(uint n) : MallaInd("Malla torre con n plantas") {
       }
       triangulos.push_back(t1);
       triangulos.push_back(t2);
-      std::cout << "t1: " << glm::to_string(t1) << std::endl;
-      std::cout << "t2: " << glm::to_string(t2) << std::endl;
+      // std::cout << "t1: " << glm::to_string(t1) << std::endl;
+      // std::cout << "t2: " << glm::to_string(t2) << std::endl;
     }
   }
 }
+// ****************************************************************************
+// Clase 'Cubo24
+
+Cubo24::Cubo24() : MallaInd("cubo 24 vértices") {
+
+  vertices = {
+      {-1.0, -1.0, -1.0}, // 0
+      {-1.0, -1.0, +1.0}, // 1
+      {-1.0, +1.0, -1.0}, // 2
+      {-1.0, +1.0, +1.0}, // 3
+      {+1.0, -1.0, -1.0}, // 4
+      {+1.0, -1.0, +1.0}, // 5
+      {+1.0, +1.0, -1.0}, // 6
+      {+1.0, +1.0, +1.0}, // 7
+
+      {-1.0, -1.0, -1.0}, // 8
+      {-1.0, -1.0, +1.0}, // 9
+      {-1.0, +1.0, -1.0}, // 10
+      {-1.0, +1.0, +1.0}, // 11
+      {+1.0, -1.0, -1.0}, // 12
+      {+1.0, -1.0, +1.0}, // 13
+      {+1.0, +1.0, -1.0}, // 14
+      {+1.0, +1.0, +1.0}, // 15
+
+      {-1.0, -1.0, -1.0}, // 16
+      {-1.0, -1.0, +1.0}, // 17
+      {-1.0, +1.0, -1.0}, // 18
+      {-1.0, +1.0, +1.0}, // 19
+      {+1.0, -1.0, -1.0}, // 20
+      {+1.0, -1.0, +1.0}, // 21
+      {+1.0, +1.0, -1.0}, // 22
+      {+1.0, +1.0, +1.0}, // 23
+  };
+
+  triangulos = {
+      {0, 1, 3},    {0, 3, 2}, // X-          0
+      {4, 7, 5},    {4, 6, 7}, // X+ (+4)     2
+
+      {8, 13, 9},   {8, 12, 13},  // Y-             4
+      {10, 11, 15}, {10, 15, 14}, // Y+ (+2)     6
+
+      {16, 22, 20}, {16, 18, 22}, // Z-          8
+      {17, 21, 23}, {17, 23, 19}  // Z+ (+1)     10
+  };
+
+  // calculamos las coordenadas de textura
+  cc_tt_ver = {
+      {0.0, 1.0}, {1.0, 1.0}, {0.0, 0.0}, {1.0, 0.0},
+      {1.0, 1.0}, {0.0, 1.0}, {1.0, 0.0}, {0.0, 0.0},
+
+      {0.0, 1.0}, {0.0, 0.0}, {0.0, 0.0}, {0.0, 1.0},
+      {1.0, 1.0}, {1.0, 0.0}, {1.0, 0.0}, {1.0, 1.0},
+
+      {1.0, 1.0}, {0.0, 1.0}, {1.0, 0.0}, {0.0, 0.0},
+      {0.0, 1.0}, {1.0, 1.0}, {0.0, 0.0}, {1.0, 0.0},
+  };
+  // vertices = {
+  //     // Cara 1
+  //     {-1.0, -1.0, -1.0}, // 0
+  //     {-1.0, -1.0, +1.0}, // 1
+  //     {-1.0, +1.0, -1.0}, // 2
+  //     {-1.0, +1.0, +1.0}, // 3
+  //     // Cara 2
+  //     {+1.0, -1.0, -1.0}, // 4
+  //     {+1.0, -1.0, +1.0}, // 5
+  //     {+1.0, +1.0, -1.0}, // 6
+  //     {+1.0, +1.0, +1.0}, // 7
+  //     // Cara 3
+  //     {-1.0, -1.0, -1.0}, // 8
+  //     {-1.0, -1.0, +1.0}, // 9
+  //     {+1.0, -1.0, -1.0}, // 10
+  //     {+1.0, -1.0, +1.0}, // 11
+  //     // Cara 4
+  //     {-1.0, +1.0, -1.0}, // 12
+  //     {-1.0, +1.0, +1.0}, // 13
+  //     {+1.0, +1.0, -1.0}, // 14
+  //     {+1.0, +1.0, +1.0}, // 15
+  //     // Cara 5
+  //     {-1.0, -1.0, -1.0}, // 16
+  //     {-1.0, +1.0, -1.0}, // 17
+  //     {+1.0, -1.0, -1.0}, // 18
+  //     {+1.0, +1.0, -1.0}, // 19
+  //     // Cara 6
+  //     {-1.0, -1.0, +1.0}, // 20
+  //     {-1.0, +1.0, +1.0}, // 21
+  //     {+1.0, -1.0, +1.0}, // 22
+  //     {+1.0, +1.0, +1.0}, // 23
+  // };
+  //
+  // triangulos = {
+  //     // Cara 1
+  //     {0, 1, 3},
+  //     {0, 3, 2}, // X-
+  //     // Cara 2
+  //     {4, 7, 5},
+  //     {4, 6, 7}, // X+ (+4)
+  //     // Cara 3
+  //     {8, 9, 11},
+  //     {8, 11, 10}, // Y-
+  //     // Cara 4
+  //     {12, 15, 13},
+  //     {12, 14, 15}, // Y+ (+2)
+  //     // Cara 5
+  //     {16, 17, 19},
+  //     {16, 19, 18}, // Z-
+  //     // Cara 6
+  //     {20, 23, 21},
+  //     {20, 22, 23}, // Z+ (+1)
+  // };
+  //
+  // cc_tt_ver = {
+  //     {0.0, 1.0}, {1.0, 1.0}, {0.0, 0.0}, {1.0, 0.0},
+  //     {1.0, 1.0}, {0.0, 1.0}, {1.0, 0.0}, {0.0, 0.0},
+  //
+  //     {0.0, 1.0}, {0.0, 0.0}, {0.0, 0.0}, {0.0, 1.0},
+  //     {1.0, 1.0}, {1.0, 0.0}, {1.0, 0.0}, {1.0, 1.0},
+  //
+  //     {1.0, 1.0}, {0.0, 1.0}, {1.0, 0.0}, {0.0, 0.0},
+  //     {0.0, 1.0}, {1.0, 1.0}, {0.0, 0.0}, {1.0, 0.0},
+  // };
+  calcularNormales();
+}
+
 // -----------------------------------------------------------------------------------------------

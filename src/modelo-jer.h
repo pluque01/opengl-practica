@@ -89,3 +89,8 @@ class GanchoDerecho : public NodoGrafoEscena {
 public:
   GanchoDerecho();
 };
+
+class NodoCubo24 : public NodoGrafoEscena {
+public:
+  NodoCubo24();
+};

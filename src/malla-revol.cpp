@@ -49,6 +49,56 @@ void MallaRevol::inicializar(
 ) {
   using namespace glm;
 
+  // PRACTICA 4: Crear normales de los vertices
+
+  // En primer lugar calcular las normales de las aristas
+  vector<vec3> nor_aristas;
+  for (int i = 0; i < perfil.size() - 1; i++) {
+    vec3 mi = perfil[i + 1] - perfil[i];
+
+    // rotar 90º en sentido horario al rededor del eje z
+    vec3 mi_rot = {mi.y, -mi.x, mi.z};
+
+    if (length(mi_rot) > 0.0)
+      mi_rot = normalize(mi_rot);
+    else
+      mi_rot = {0.0, 0.0, 0.0};
+
+    // Si el objeto es cerrado, las normales apuntan a fuera
+    if (mi_rot.x < 0.0)
+      mi_rot = -mi_rot;
+
+    nor_aristas.push_back(mi_rot);
+  }
+
+  vector<vec3> nor_ver_perfil;
+  nor_ver_perfil.push_back(nor_aristas[0]);
+  for (unsigned i = 1; i < perfil.size() - 1; i++) {
+    vec3 ni = normalize(nor_aristas[i - 1] + nor_aristas[i]);
+    nor_ver_perfil.push_back(ni);
+  }
+  nor_ver_perfil.push_back(nor_aristas[perfil.size() - 2]);
+
+  // calculamos las coordenadas de textura de cada vértice del perfil
+  vector<float> d;
+  for (unsigned i = 0; i < perfil.size() - 1; i++) {
+    vec3 v1 = perfil[i];
+    vec3 v2 = perfil[i + 1];
+    d.push_back(length(v2 - v1));
+  }
+
+  vector<float> t;
+  t.push_back(0.0);
+  float suma = 0.0;
+  for (unsigned i = 0; i < perfil.size() - 1; i++) {
+    suma += d[i];
+    t.push_back(suma);
+  }
+
+  for (unsigned i = 0; i < t.size(); i++) {
+    t[i] /= suma;
+  }
+
   // COMPLETAR: práctica 2: implementar algoritmo de creación de malla de
   // revolución
   //
@@ -64,6 +114,10 @@ void MallaRevol::inicializar(
       float vert_x = perfil[j][0] * cos(angle);
       float vert_z = -perfil[j][0] * sin(angle);
       vertices.push_back({vert_x, perfil[j][1], vert_z});
+      nor_ver.push_back({nor_ver_perfil[j].x * cos(angle), nor_ver_perfil[j].y,
+                         nor_ver_perfil[j].x * (-sin(angle))});
+
+      cc_tt_ver.push_back({float(i) / (num_copias - 1), 1 - t[j]});
     }
   }
 
