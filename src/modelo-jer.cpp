@@ -21,7 +21,7 @@ GrafoCubos::GrafoCubos() {
   lateral->agregar(translate(vec3(0.5, -0.25, 0.5)));
   lateral->agregar(scale(vec3(0.1, 0.25, 0.1)));
   unsigned ind = lateral->agregar(rotate(0.0f, vec3{0.0, -1.0, 0.0}));
-  lateral->agregar(new Cubo());
+  lateral->agregar(new Cubo24());
   for (int i = 0; i < 4; i++) {
     agregar(lateral);
     agregar(rotate(radians(90.0f), vec3{0.0, 0.0, 1.0}));
@@ -141,15 +141,17 @@ void BrazoMecanico::actualizarEstadoParametro(const unsigned iParam,
 float BaseBrazo::altura = 0.05;
 BaseBrazo::BaseBrazo() {
   agregar(new SoporteInferior());
+  agregar(new Material(new TexturaXY("madera1.jpg"), 0.25, 1.5, 1.5, 50));
   agregar(translate(vec3(0.0, altura, 0.0)));
   agregar(scale(vec3(0.7, altura, 0.7)));
   ponerColor(vec3(0.82, 0.65, 0.47));
-  agregar(new Cubo());
+  agregar(new Cubo24());
 }
 
 float Tornillo::altura = 0.3;
 float Tornillo::radio = 0.02;
 Tornillo::Tornillo() {
+  agregar(new Material(new Textura("metal1.jpg"), 0.25, 1.5, 1.5, 50));
   ponerColor(vec3(0.70, 0.70, 0.70));
   agregar(scale(vec3(Tornillo::altura, Tornillo::radio, Tornillo::radio)));
   agregar(rotate(radians(90.0f), vec3(0.0, 0.0, 1.0)));
@@ -160,13 +162,14 @@ float SoporteInferior::altura = 0.2;
 float SoporteInferior::base = 0.15;
 float SoporteInferior::ancho = 0.05;
 SoporteInferior::SoporteInferior() {
+  agregar(new Material(0.5, 0.5, 0.1, 1));
   ponerColor(vec3(0.42, 0.26, 0.15));
   NodoGrafoEscena *lateral_soporte_inferior = new NodoGrafoEscena();
 
   lateral_soporte_inferior->agregar(
       translate(vec3(0.0, altura + 2 * BaseBrazo::altura, 0.0)));
   lateral_soporte_inferior->agregar(scale(vec3(ancho, altura, base)));
-  lateral_soporte_inferior->agregar(new Cubo());
+  lateral_soporte_inferior->agregar(new Cubo24());
 
   agregar(translate(vec3(0.15, 0.0, 0.0)));
   agregar(lateral_soporte_inferior);
@@ -181,12 +184,13 @@ float BrazoInferior::altura = 0.4;
 float BrazoInferior::base = 0.1;
 float BrazoInferior::ancho = 0.01;
 BrazoInferior::BrazoInferior() {
+  agregar(new Material(new Textura("madera2.jpg"), 0.25, 1.5, 1.0, 1));
   ponerColor(vec3(0.42, 0.26, 0.15));
   NodoGrafoEscena *lateral_brazo_inferior = new NodoGrafoEscena();
   lateral_brazo_inferior->agregar(
       translate(vec3(0.0, altura + 2 * BaseBrazo::altura + 0.2, 0.0)));
   lateral_brazo_inferior->agregar(scale(vec3(ancho, altura, base)));
-  lateral_brazo_inferior->agregar(new Cubo());
+  lateral_brazo_inferior->agregar(new Cubo24());
   agregar(translate(vec3(0.15 - 2 * SoporteInferior::ancho, 0.0, 0.0)));
   agregar(lateral_brazo_inferior);
   agregar(translate(vec3(-0.3 + 4 * SoporteInferior::ancho, 0.0, 0.0)));
@@ -196,13 +200,14 @@ float BrazoSuperior::altura = 0.1;
 float BrazoSuperior::base = 0.4;
 float BrazoSuperior::ancho = 0.01;
 BrazoSuperior::BrazoSuperior() {
+  agregar(new Material(new TexturaXY("madera2.jpg"), 0.25, 1.5, 1.0, 1));
   ponerColor(vec3(0.42, 0.26, 0.15));
   NodoGrafoEscena *lateral_brazo_superior = new NodoGrafoEscena();
   lateral_brazo_superior->agregar(translate(vec3(
       0.0, 2 * BaseBrazo::altura + 0.2 + 2 * BrazoInferior::altura - altura,
       base - BrazoInferior::base)));
   lateral_brazo_superior->agregar(scale(vec3(ancho, altura, base)));
-  lateral_brazo_superior->agregar(new Cubo());
+  lateral_brazo_superior->agregar(new Cubo24());
   agregar(translate(vec3(0.15, 0.0, 0.0)));
   agregar(lateral_brazo_superior);
   agregar(translate(vec3(-0.3, 0.0, 0.0)));
@@ -217,18 +222,22 @@ float BaseGancho::altura = 0.05;
 float BaseGancho::base = 0.1;
 float BaseGancho::ancho = 0.2;
 BaseGancho::BaseGancho() {
+  agregar(new Material(new Textura("metal1.jpg"), 0.25, 1.5, 1.5, 50));
   ponerColor(vec3(0.29, 0.29, 0.29));
   agregar(translate(
       vec3(0.0, BaseBrazo::altura + 0.2 + 2 * BrazoInferior::altura - altura,
            2 * BrazoSuperior::base - base)));
   agregar(scale(vec3(ancho, altura, base)));
-  agregar(new Cubo());
+  agregar(new Cubo24());
 }
 
 float Gancho::altura = 0.03;
 float Gancho::base = 0.1;
 float Gancho::ancho = 0.03;
-Gancho::Gancho() { ponerColor(vec3(0.29, 0.29, 0.29)); }
+Gancho::Gancho() {
+  agregar(new Material(1.0, 1.5, 0.5, 50));
+  ponerColor(vec3(0.29, 0.29, 0.29));
+}
 
 GanchoIzquierdo::GanchoIzquierdo() {
   agregar(translate(vec3(-Gancho::ancho,
@@ -236,7 +245,7 @@ GanchoIzquierdo::GanchoIzquierdo() {
                              BaseGancho::altura,
                          2 * BrazoSuperior::base + Gancho::base)));
   agregar(scale(vec3(Gancho::ancho, Gancho::altura, Gancho::base)));
-  agregar(new Cubo());
+  agregar(new Cubo24());
 }
 GanchoDerecho::GanchoDerecho() {
   agregar(translate(vec3(Gancho::ancho,
@@ -244,7 +253,7 @@ GanchoDerecho::GanchoDerecho() {
                              BaseGancho::altura,
                          2 * BrazoSuperior::base + Gancho::base)));
   agregar(scale(vec3(Gancho::ancho, Gancho::altura, Gancho::base)));
-  agregar(new Cubo());
+  agregar(new Cubo24());
 }
 
 NodoCubo24::NodoCubo24() {
