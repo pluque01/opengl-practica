@@ -394,6 +394,7 @@ Escena3::Escena3() {
 Escena4::Escena4() {
   using namespace std;
   cout << "Creando objetos de la práctica 4." << endl;
+  objetos.push_back(new NodoDiscoP4());
   objetos.push_back(new BrazoMecanico());
   objetos.push_back(new LataPeones());
   objetos.push_back(new NodoCubo24());

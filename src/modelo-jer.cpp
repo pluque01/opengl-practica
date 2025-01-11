@@ -262,3 +262,9 @@ NodoCubo24::NodoCubo24() {
   agregar(new Material(new Textura("window-icon.jpg"), 0.2, 0.8, 0.0, 1.0));
   agregar(new Cubo24());
 }
+
+NodoDiscoP4::NodoDiscoP4() {
+  ponerNombre("Nodo ejercicio adicional práctica 4");
+  agregar(new Material(new Textura("cuadricula.jpg"), 0.25, 1.5, 1.5, 50));
+  agregar(new MallaDiscoP4());
+}
