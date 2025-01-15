@@ -93,6 +93,7 @@ bool Objeto3D::cuandoClick(const glm::vec3 &centro_wc) {
   // (parámetro 'centro_wc'), usando el método 'mirarHacia' de esa cámara.
   // ...
 
+  escena->camaraActual()->mirarHacia(centro_wc);
   return true;
 }
 // -----------------------------------------------------------------------------

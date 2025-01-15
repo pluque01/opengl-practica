@@ -79,6 +79,8 @@ protected:
   // COMPLETAR: práctica 3: definir variables y métodos privados del nodo
   // .......
   std::vector<EntradaNGE> entradas;
+  // Practica 5:
+  bool centro_calculado = false;
 
 public:
   NodoGrafoEscena();

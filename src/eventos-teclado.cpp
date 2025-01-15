@@ -33,6 +33,7 @@
 #include "ig-aux.h" // include cabeceras de opengl / glut / glut / glew
 #include "materiales-luces.h"
 #include "seleccion.h"
+#include <ostream>
 
 // evita la necesidad de escribir std::
 using namespace std;
@@ -216,6 +217,10 @@ void FGE_PulsarLevantarTecla(GLFWwindow *window, int key, int scancode,
     // conmutar el valor de 'apl->visualizar_fbo, e informar sobre si la
     // visualización del FBO ha quedado activada o desactivada
     //
+  case GLFW_KEY_Y:
+    aplicacionIG->visualizar_fbo = !aplicacionIG->visualizar_fbo;
+    cout << "La visualizacion de FBO está: "
+         << (aplicacionIG->visualizar_fbo ? "activada" : "desactivada") << endl;
 
   case GLFW_KEY_T:
     aplicacionIG->imprimir_tiempos = !aplicacionIG->imprimir_tiempos;

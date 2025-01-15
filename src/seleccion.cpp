@@ -29,10 +29,13 @@
 // *********************************************************************
 
 #include "seleccion.h"
+#include "aplicacion-ig.h"
 #include "camara.h"
 #include "fbo.h"
 #include "grafo-escena.h"
 #include "ig-aux.h"
+#include "objeto3d.h"
+#include <glm/ext/matrix_float4x4.hpp>
 
 // ----------------------------------------------------------------------------------
 // calcula un color usando un identificador entero no negativo
@@ -69,8 +72,15 @@ int LeerIdentEnPixel(int xpix, int ypix) {
   // pixel (x,y)
   // .....(sustituir el 'return 0' por lo que corresponda)
   // .....
+  unsigned char bytes[3]; // para guardar los tres bytes
 
-  return 0;
+  // leer los 3 bytes del frame-buffer
+  glReadPixels(xpix, ypix, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, (void *)bytes);
+
+  // reconstruir el identificador y devolverlo:
+  // return int(bytes[0]) + (int(0x100U) * int(bytes[1])) +
+  //        (int(0x10000U) * int(bytes[2]));
+  return bytes[0] + (0x100U * bytes[1]) + (0x10000U * bytes[2]);
 }
 
 // -------------------------------------------------------------------------------
@@ -105,24 +115,35 @@ bool AplicacionIG::seleccion(int x, int y) {
   //        el tamaño actual de la ventana en dos parámetros)
   //      * Activar el framebuffer, con su método 'activar'.
   // .......
+  if (aplicacionIG->fbo == nullptr) {
+    aplicacionIG->fbo = new Framebuffer(ventana_tam_x, ventana_tam_y);
+  }
+  aplicacionIG->fbo->activar(ventana_tam_x, ventana_tam_y);
 
   // (2) Visualizar la escena actual en modo selección. Se usará el método
   // 'visualizarGL_Seleccion' de la clae 'Escena'
   //
   // .......
+  escena->visualizarGL_Seleccion();
 
   // (3) Leer el identificador del pixel en las coordenadas (x,y), se usa
   // 'LeerIdentEnPixel'.
   // .......
+  int identificador = LeerIdentEnPixel(x, y);
 
   // (4) Desactivar el FBO (vuelve a activar el FBO por defecto, con nombre
   // '0'),
   //     se usa el método 'desactivar' del FBO
   // .......
+  aplicacionIG->fbo->desactivar();
 
   // (5) Si el identificador del pixel es 0, imprimir mensaje y terminar
   // (devolver 'false')
   // .......
+  if (identificador == 0) {
+    cout << "El identificador seleccionado es 0" << endl;
+    return false;
+  }
 
   // (6) Buscar el identificdor en el objeto raiz de la escena y ejecutar
   // 'cuandoClick',
@@ -136,7 +157,12 @@ bool AplicacionIG::seleccion(int x, int y) {
   //       el mismo valor devuelto por 'cuandoClick'.
   //
   // .......
-
+  Objeto3D *raiz = escena->objetoActual();
+  Objeto3D *objeto = nullptr;
+  vec3 centro = vec3(0.0f);
+  if (raiz->buscarObjeto(identificador, mat4(1.0), &objeto, centro)) {
+    return objeto->cuandoClick(centro);
+  }
   // si el flujo de control llega aquí, es que no se encuentra ese
   // identificador, devolver false:
   cout << "El identificador del objeto en el pixel no se encuentra en el "
