@@ -421,11 +421,11 @@ Escena3::Escena3() {
 Escena4::Escena4() {
   using namespace std;
   cout << "Creando objetos de la práctica 4." << endl;
-  objetos.push_back(new BeethovenP4(true));
-  objetos.push_back(new NodoDiscoP4());
-  objetos.push_back(new BrazoMecanico());
-  objetos.push_back(new LataPeones());
   objetos.push_back(new NodoCubo24());
+  objetos.push_back(new LataPeones());
+  objetos.push_back(new BrazoMecanico());
+  objetos.push_back(new NodoDiscoP4());
+  objetos.push_back(new BeethovenP4(true));
 }
 
 // ----------------------------------------------------------------------
@@ -437,6 +437,8 @@ Escena4::Escena4() {
 Escena5::Escena5() {
   using namespace std;
   cout << "Creando objetos de la práctica 5." << endl;
-  objetos.push_back(new BrazoMecanico());
   objetos.push_back(new VariasLatasPeones());
+  objetos.push_back(new BrazoMecanico());
+  objetos.push_back(new GrafoEsferasP5());
+  objetos.push_back(new GrafoEsferasP5_2());
 }

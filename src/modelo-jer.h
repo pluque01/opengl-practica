@@ -119,3 +119,27 @@ public:
     }
   }
 };
+
+class MiEsferaE1 : public NodoGrafoEscena {
+public:
+  float fila, columna;
+  MiEsferaE1(unsigned int i, unsigned int j);
+  bool cuandoClick(const glm::vec3 &centro_wc);
+};
+
+class GrafoEsferasP5 : public NodoGrafoEscena {
+public:
+  GrafoEsferasP5();
+};
+
+class MiEsferaE2 : public NodoGrafoEscena {
+public:
+  bool is_selected = false;
+  MiEsferaE2();
+  bool cuandoClick(const glm::vec3 &centro_wc);
+};
+
+class GrafoEsferasP5_2 : public NodoGrafoEscena {
+public:
+  GrafoEsferasP5_2();
+};

@@ -291,3 +291,72 @@ BeethovenP4::BeethovenP4(const bool horizontal) {
                        0.25, 1.5, 1.5, 50));
   agregar(new MallaPLY("beethoven.ply"));
 }
+
+bool MiEsferaE1::cuandoClick(const glm::vec3 &centro_wc) {
+  std::cout << "Se ha seleccionado la esfera número " << columna
+            << " de la fila " << fila << std::endl;
+  return true;
+}
+
+MiEsferaE1::MiEsferaE1(unsigned i, unsigned j) {
+  fila = i + 1;
+  columna = j + 1;
+  ponerNombre("MiEsferaE1");
+  agregar(new Material(0.25, 0.5, 0.75, 50));
+  agregar(new Esfera(20, 20));
+  ponerColor(vec3(1.0, 1.0, 1.0));
+  ponerIdentificador(10 * i + j + 1);
+}
+
+GrafoEsferasP5::GrafoEsferasP5() {
+  const unsigned n_filas_esferas = 8, n_esferas_x_fila = 5;
+  const float e = 0.4 / n_esferas_x_fila;
+  agregar(scale(vec3(e, e, e)));
+  for (unsigned i = 0; i < n_filas_esferas; i++) {
+    NodoGrafoEscena *fila_esferas = new NodoGrafoEscena();
+    for (unsigned j = 0; j < n_esferas_x_fila; j++) {
+      MiEsferaE1 *esfera = new MiEsferaE1(i, j);
+      fila_esferas->agregar(translate(vec3(2.2, 0.0, 0.0)));
+      fila_esferas->agregar(esfera);
+    }
+    agregar(fila_esferas);
+    agregar(translate(vec3(0.0, 0.0, 5.0)));
+  }
+}
+
+bool MiEsferaE2::cuandoClick(const glm::vec3 &centro_wc) {
+  if (is_selected) {
+    ponerColor(vec3(1.0, 1.0, 1.0));
+  } else {
+    ponerColor(vec3(1.0, 0.0, 0.0));
+  }
+  is_selected = !is_selected;
+  return true;
+}
+
+MiEsferaE2::MiEsferaE2() {
+  ponerNombre("MiEsferaE2");
+  agregar(new Material(0.25, 0.5, 0.75, 50));
+  agregar(new Esfera(20, 20));
+  ponerColor(vec3(1.0, 1.0, 1.0));
+}
+
+GrafoEsferasP5_2::GrafoEsferasP5_2() {
+  const unsigned n_filas_esferas = 8, n_esferas_x_fila = 5;
+  const float e = 2.5 / n_esferas_x_fila;
+  agregar(scale(vec3(e, e, e)));
+  for (unsigned i = 0; i < n_filas_esferas; i++) {
+    NodoGrafoEscena *fila_esferas = new NodoGrafoEscena();
+    fila_esferas->agregar(translate(vec3(3.0, 0.0, 0.0)));
+    for (unsigned j = 0; j < n_esferas_x_fila; j++) {
+      MiEsferaE2 *esfera = new MiEsferaE2();
+      fila_esferas->agregar(translate(vec3(2.5, 0.0, 0.0)));
+      fila_esferas->agregar(esfera);
+
+      esfera->ponerIdentificador(10 * i + j + 1);
+    }
+    agregar(fila_esferas);
+    agregar(
+        rotate(radians(float(360.0 / n_filas_esferas)), vec3(0.0, 1.0, 0.0)));
+  }
+}
