@@ -70,6 +70,8 @@ void GrafoEstrellaX::actualizarEstadoParametro(const unsigned iParam,
 }
 
 BrazoMecanico::BrazoMecanico() {
+  ponerIdentificador(0);
+  ponerNombre("BrazoMecanico");
   agregar(new BaseBrazo());
   unsigned ind_rotacion_inferior = agregar(rotate(0.0f, vec3(1.0, 0.0, 1.0)));
   agregar(new BrazoInferior());
@@ -140,6 +142,8 @@ void BrazoMecanico::actualizarEstadoParametro(const unsigned iParam,
 
 float BaseBrazo::altura = 0.05;
 BaseBrazo::BaseBrazo() {
+  ponerIdentificador(1);
+  ponerNombre("BaseBrazo");
   agregar(new SoporteInferior());
   agregar(new Material(new TexturaXY("madera1.jpg"), 0.25, 1.5, 1.5, 50));
   agregar(translate(vec3(0.0, altura, 0.0)));
@@ -151,6 +155,8 @@ BaseBrazo::BaseBrazo() {
 float Tornillo::altura = 0.3;
 float Tornillo::radio = 0.02;
 Tornillo::Tornillo() {
+  ponerIdentificador(0);
+  ponerNombre("Tornillo");
   agregar(new Material(new Textura("metal1.jpg"), 0.25, 1.5, 1.5, 50));
   ponerColor(vec3(0.70, 0.70, 0.70));
   agregar(scale(vec3(Tornillo::altura, Tornillo::radio, Tornillo::radio)));
@@ -162,6 +168,8 @@ float SoporteInferior::altura = 0.2;
 float SoporteInferior::base = 0.15;
 float SoporteInferior::ancho = 0.05;
 SoporteInferior::SoporteInferior() {
+  ponerIdentificador(2);
+  ponerNombre("SoporteInferior");
   agregar(new Material(0.5, 0.5, 0.1, 1));
   ponerColor(vec3(0.42, 0.26, 0.15));
   NodoGrafoEscena *lateral_soporte_inferior = new NodoGrafoEscena();
@@ -184,6 +192,8 @@ float BrazoInferior::altura = 0.4;
 float BrazoInferior::base = 0.1;
 float BrazoInferior::ancho = 0.01;
 BrazoInferior::BrazoInferior() {
+  ponerIdentificador(3);
+  ponerNombre("BrazoInferior");
   agregar(new Material(new Textura("madera2.jpg"), 0.25, 1.5, 1.0, 1));
   ponerColor(vec3(0.42, 0.26, 0.15));
   NodoGrafoEscena *lateral_brazo_inferior = new NodoGrafoEscena();
@@ -200,6 +210,8 @@ float BrazoSuperior::altura = 0.1;
 float BrazoSuperior::base = 0.4;
 float BrazoSuperior::ancho = 0.01;
 BrazoSuperior::BrazoSuperior() {
+  ponerIdentificador(4);
+  ponerNombre("BrazoSuperior");
   agregar(new Material(new TexturaXY("madera2.jpg"), 0.25, 1.5, 1.0, 1));
   ponerColor(vec3(0.42, 0.26, 0.15));
   NodoGrafoEscena *lateral_brazo_superior = new NodoGrafoEscena();
@@ -222,6 +234,8 @@ float BaseGancho::altura = 0.05;
 float BaseGancho::base = 0.1;
 float BaseGancho::ancho = 0.2;
 BaseGancho::BaseGancho() {
+  ponerIdentificador(5);
+  ponerNombre("BaseGancho");
   agregar(new Material(new Textura("metal1.jpg"), 0.25, 1.5, 1.5, 50));
   ponerColor(vec3(0.29, 0.29, 0.29));
   agregar(translate(
@@ -235,6 +249,8 @@ float Gancho::altura = 0.03;
 float Gancho::base = 0.1;
 float Gancho::ancho = 0.03;
 Gancho::Gancho() {
+  ponerIdentificador(6);
+  ponerNombre("Gancho");
   agregar(new Material(1.0, 1.5, 0.5, 50));
   ponerColor(vec3(0.29, 0.29, 0.29));
 }
