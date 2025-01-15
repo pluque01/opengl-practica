@@ -268,3 +268,10 @@ NodoDiscoP4::NodoDiscoP4() {
   agregar(new Material(new Textura("cuadricula.jpg"), 0.25, 1.5, 1.5, 50));
   agregar(new MallaDiscoP4());
 }
+
+BeethovenP4::BeethovenP4(const bool horizontal) {
+  ponerNombre("Beethoven");
+  agregar(new Material(new TexturaBeethoven("text-madera.jpg", horizontal),
+                       0.25, 1.5, 1.5, 50));
+  agregar(new MallaPLY("beethoven.ply"));
+}

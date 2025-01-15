@@ -99,3 +99,23 @@ class NodoDiscoP4 : public NodoGrafoEscena {
 public:
   NodoDiscoP4();
 };
+
+class BeethovenP4 : public NodoGrafoEscena {
+public:
+  BeethovenP4(const bool horizontal);
+};
+
+class TexturaBeethoven : public Textura {
+public:
+  TexturaBeethoven(const std::string &nom, const bool horizontal)
+      : Textura(nom) {
+    modo_gen_ct = mgct_coords_objeto;
+    if (horizontal) {
+      coefs_s[0] = 0.0;
+      coefs_s[1] = 1.0;
+    } else {
+      coefs_s[0] = 1.0;
+      coefs_s[1] = 0.0;
+    }
+  }
+};
