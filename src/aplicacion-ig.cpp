@@ -73,26 +73,25 @@ AplicacionIG::AplicacionIG() {
   assert(pila_materiales != nullptr);
 
   // crear los objetos y las escenas que forman, insertar escenas en 'escenas'
-  // escenas.push_back(new Escena1());
+  escenas.push_back(new Escena1());
 
   // COMPLETAR: práctica 2: añadir escena de la práctica 2
   //
   // hacer 'push_back' en el vector de escenas de una instancia de 'Escena2'
   // ......
-  // escenas.push_back(new Escena2());
+  escenas.push_back(new Escena2());
 
   // COMPLETAR: práctica 3: añadir escena de la práctica 3
   //
   // hacer 'push_back' en el vector de escenas de una instancia de 'Escena3'
   // ......
-
-  // escenas.push_back(new Escena3());
+  escenas.push_back(new Escena3());
 
   // COMPLETAR: práctica 4: añadir escena de la práctica 4
   //
   // hacer 'push_back' en el vector de escenas de una instancia de 'Escena4'
   // ......
-  // escenas.push_back(new Escena4());
+  escenas.push_back(new Escena4());
 
   // COMPLETAR: práctica 5: añadir escena de la práctica 5
   //

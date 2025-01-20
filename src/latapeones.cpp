@@ -1,3 +1,5 @@
+// Nombre: Pablo, Apellidos: Luque Salguero, Titulación: GIIADE
+// Email: pluque01@correo.ugr.es, DNI: 20100264N
 #include "latapeones.h"
 #include "grafo-escena.h"
 #include "malla-revol.h"

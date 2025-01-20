@@ -78,20 +78,18 @@ Escena::Escena() {
   // perspectiva, desde el origen, ratio ancho/alto=1,0, punto_atencion=(0,1,0),
   // apertura del campo=60º
   using namespace glm;
+  // FRENTE
   camaras.push_back(new Camara3Modos(true, vec3(5.0, 5.0, 5.0), 1.0,
                                      vec3(0.0, 0.0, 0.0), 60.0));
-  // ortogonal, desde el origen, ratio ancho/alto=1,0, punto_atencion=(0,1,0),
-  // apertura del campo=60º
+  // ALZADO
+  camaras.push_back(new Camara3Modos(true, vec3(0.0, 0.0, 10.0), 1.0,
+                                     vec3(0.0, 0.0, 0.0), 60.0));
+  // PERFIL (ortogonal)
   camaras.push_back(new Camara3Modos(false, vec3(10.0, 0.0, 0.0), 1.0,
                                      vec3(0.0, 0.0, 0.0), 60.0));
-  camaras.push_back(new Camara3Modos(true, *(new vec3({2.0, 2.0, 2.0})), 1.0,
-                                     *(new vec3({0.0, 0.0, 0.0})), 60.0));
-  camaras.push_back(new Camara3Modos(false, *(new vec3({5.0, 5.0, 5.0})), 1.0,
-                                     *(new vec3({0.0, 0.0, 0.0})), 60.0));
-  camaras.push_back(new Camara3Modos(false, *(new vec3({-2.5, 2.5, 2.5})), 1.0,
-                                     *(new vec3({0.0, 0.0, 0.0})), 50.0));
-  camaras.push_back(new Camara3Modos(true, *(new vec3({5.0, -2.5, 5.0})), 1.0,
-                                     *(new vec3({0.5, 3.0, 0.0})), 70.0));
+  // PLANTA (ortogonal)
+  camaras.push_back(new Camara3Modos(false, vec3(0.0, 10.0, 0.01), 1.0,
+                                     vec3(0.0, 0.0, 0.0), 60.0));
 }
 // -----------------------------------------------------------------------------------------------
 // visualiza la escena en la ventana actual, usando la configuración
