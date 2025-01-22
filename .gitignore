@@ -2,3 +2,5 @@ build/
 .vscode/
 workspace.code-workspace
 *.zip
+doc/merged_code.pdf
+doc/merged_code.md
